@@ -87,16 +87,8 @@ $doccount = count($docsloadedarray);
                         ?>
                     </div> 
 
-
-
-
-
-
-
-
-
                 </div>
             </div>
         </div>
+    </section>
 </div>
-</section>
