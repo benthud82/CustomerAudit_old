@@ -19,6 +19,24 @@
             <section class="main padder"> 
 
                 <div class="" style="padding-bottom: 25px; padding-top: 20px;">
+
+                    <div class="row" style="padding-bottom: 25px;"> 
+
+                        <div class="col-md-3 col-sm-3 col-xs-12 col-lg-2 col-xl-2 text-center">
+                            <label>Group Type:</label>
+                            <select name = 'grouptype' class = "form-control" id = 'grouptype'>
+                                <option value="SALESPLAN">Sales Plan</option>
+                                <option value="SHIPTO">Ship To</option>
+                                <option value="BILLTO">Bill To</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12 col-lg-2 col-xl-2 text-center">
+                            <label>Group ID:</label>
+                            <input type="text" name="groupid" id="groupid" class="form-control" placeholder="salesplan name, bill to #, or ship to #" tabindex="3"/>
+                        </div>
+                    </div>
+
+
                     <div id="salesplansummary" class="panel-body" style="background: #efefef">
                         <div class="col-lg-4">
                             <form action="" method="post" enctype="multipart/form-data" target="_blank" id="uploadform" style="display: -webkit-inline-box;">
@@ -50,10 +68,10 @@
                 var formData = new FormData();
                 formData.append('file', file);
 
-//                var upload_custtype = $('#upload_custtype').val();
-//                var upload_custid = $('#upload_custid').val();
-//                formData.append('upload_custtype', upload_custtype);
-//                formData.append('upload_custid', upload_custid);
+                var grouptype = $('#grouptype').val();
+                var groupid = $('#groupid').val();
+                formData.append('grouptype', grouptype);
+                formData.append('groupid', groupid);
 
 
                 //ajax for uload document panel
