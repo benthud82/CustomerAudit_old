@@ -48,6 +48,25 @@
                     </div>
                 </div>
 
+
+                <div id="modal_uploadstatus" class="modal fade " role="dialog">
+                    <div class="modal-dialog modal-lg">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Upload Status</h4>
+                            </div>
+
+                            <div class="modal-body">
+                                <div id="ajaxresult"></div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </section>
         </section>
 
@@ -62,19 +81,18 @@
 
             //ajax logic to parse the file and insert into audit table customeraction_asgntasks
             $(document).on("click", "#auditupload_submit", function (event) {
-                debugger;
+//                debugger;
+                $('#modal_uploadstatus').modal('toggle');
+
                 event.preventDefault();
                 var file = $('#fileToUpload').get(0).files[0];
                 var formData = new FormData();
                 formData.append('file', file);
-
                 var grouptype = $('#grouptype').val();
                 var groupid = $('#groupid').val();
                 formData.append('grouptype', grouptype);
                 formData.append('groupid', groupid);
-
-
-                //ajax for uload document panel
+                //ajax for upload document panel
                 $.ajax({
                     url: 'globaldata/upload_massaudit.php',
                     type: 'POST',
@@ -82,9 +100,9 @@
                     processData: false, // tell jQuery not to process the data
                     contentType: false, // tell jQuery not to set contentType
                     success: function (data) {
-                        console.log(data);
-                        loaduploadmodule();
-                        alert(data);
+                        $("#ajaxresult").html(data);
+                        //clear the file from upload
+                        document.getElementById('fileToUpload').value = null;
                     }
                 });
             });

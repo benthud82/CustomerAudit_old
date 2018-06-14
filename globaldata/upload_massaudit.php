@@ -8,18 +8,121 @@ $usersql->execute();
 $userarray = $usersql->fetchAll(pdo::FETCH_ASSOC);
 $usergroup = $userarray[0]['customeraudit_users_GROUP'];
 $now = date("Y-m-d H:i:s");
+$today = date("Y-m-d");
+//error formatting
+$errorprefix = "<div class'uploaderror'>";
+$errorpostfix = "<div>";
+$clearfile = "<script>document.getElementById('fileToUpload').value = null;</script>";
+$cleargroupid = "<script>document.getElementById('groupid').value = null;</script>";
+
+if (!isset($_POST['groupid']) || $_POST['groupid'] == '' || is_null($_POST['groupid'])) {
+    exit($errorprefix . "Please enter a Group ID." . $errorpostfix);
+} else {
+    $var_custid = ($_POST['groupid']);
+}
+$var_custtype = $_POST['grouptype'];
+
+//pull in FR info based of scorecard display table
+switch ($var_custtype) {
+    case 'SALESPLAN':
+        $frsql = "SELECT 
+                            BEFFRMNT_EXCLDS,
+                            AFTFRMNT_EXCLDS,
+                            SHIPACCMONTH,
+                            DMGACCMONTH,
+                            ADDSCACCMONTH,
+                            OSCMONTH_EXCLDS,
+                            CAST(SCOREMONTH * 100 AS UNSIGNED) AS SCOREMONTH,
+                            CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
+                            CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
+                        FROM
+                            slotting.scorecard_display_salesplan
+                        WHERE
+                            SALESPLAN = '$var_custid'";
+        break;
+    case 'SHIPTO':
+        $frsql = "SELECT DISTINCT
+                                    BEFFRMNT_EXCLDS,
+                                    AFTFRMNT_EXCLDS,
+                                    SHIPACCMONTH,
+                                    DMGACCMONTH,
+                                    ADDSCACCMONTH,
+                                    OSCMONTH_EXCLDS,
+                                    CAST(SCOREMONTH * 100 AS UNSIGNED) AS SCOREMONTH,
+                                    CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
+                                    CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
+                                FROM
+                                    slotting.scorecard_display_shipto
+                                WHERE
+                                    SHIPTONUM = '$var_custid'";
+        break;
+    case 'BILLTO':
+        $frsql = "SELECT DISTINCT
+                                    BEFFRMNT_EXCLDS,
+                                    AFTFRMNT_EXCLDS,
+                                    SHIPACCMONTH,
+                                    DMGACCMONTH,
+                                    ADDSCACCMONTH,
+                                    OSCMONTH_EXCLDS,
+                                    CAST(SCOREMONTH * 100 AS UNSIGNED) AS SCOREMONTH,
+                                    CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
+                                    CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
+                                FROM
+                                    slotting.scorecard_display_billto
+                                WHERE
+                                    BILLTONUM = '$var_custid'";
+        break;
+}
+
+$frsql_exe = $conn1->prepare($frsql);
+$frsql_exe->execute();
+$fr_array = $frsql_exe->fetchAll(pdo::FETCH_ASSOC);
+//is group ID in the FR table?
+if (count($fr_array) == 0) {
+    exit($errorprefix . $var_custtype." " . $var_custid . " not found." . $errorpostfix);
+}
 
 
-$var_custtype = ($_POST['grouptype']);
-$var_custid = ($_POST['groupid']);
+
+$target_dir = "../uploads_massaudit/";
+//was a file selected to upload
+if (array_key_exists('file', $_FILES)) {
+    $target_basename = basename($_FILES["file"]["name"]);
+} else {
+    exit($errorprefix . "Please choose file to upload." . $errorpostfix);
+}
+//is the file the correct type of .xlsx
+$target_file = $target_dir . $target_basename;
+$imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
+if ($imageFileType <> 'xlsx') {
+    exit($errorprefix . "File type must be Excel with extension must be .XLSX" . $errorpostfix . $clearfile);
+}
+
+//has the file already been uploaded?  Pull in all uploaded file names for the previous 3 months and compare to new file being uploaded
+$docsloaded = $conn1->prepare("SELECT 
+    upload_filename
+FROM
+    slotting.custaudit_massaudituploads
+WHERE
+    upload_filename = '$target_basename' and upload_date BETWEEN CURDATE() - INTERVAL 90 DAY AND CURDATE();");
+$docsloaded->execute();
+$docsloadedarray = $docsloaded->fetchAll(pdo::FETCH_ASSOC);
+
+if (count($docsloadedarray) > 0) {
+    exit($errorprefix . "This file has already been loaded.  Please select a different file." . $errorpostfix . $clearfile);
+}
+//move the file to folder
+move_uploaded_file($_FILES["file"]["tmp_name"], $target_file);
+
 $sheetkey = null;  //initialize as null for error checking
 $sheetcolumns = array('SKU', 'STATUS');  //columns needed to insert into customeraction_asgntasks table
 $data = array();
+$data_auditcomplete = array();
 require_once '../../simplexlsx.class.php';
 
-
+//determine table for fill rate info based on custtype
 //hardcoded for example.  Will need to do the parsing by dynamically loading the file based on POST from auditupload.php
-if ($xlsx = SimpleXLSX::parse('../uploads_massaudit/UHS BEHAVORIAL HEALTH (UHB15) Q1 2018.xlsx')) {
+if ($xlsx = SimpleXLSX::parse("$target_file")) {
     //what are the available sheets
     $sheetsarray = $xlsx->sheetNames();
 
@@ -32,8 +135,8 @@ if ($xlsx = SimpleXLSX::parse('../uploads_massaudit/UHS BEHAVORIAL HEALTH (UHB15
     }
 
     if (is_null($sheetkey)) { //error handling for no sheet named item detail.
-        echo 'There is not a worksheet named: Item Detail';
-        exit;
+        unlink($target_file);
+        exit($errorprefix . "There is not a worksheet named: Item Detail" . $errorpostfix . $clearfile);
     }
 
     list( $num_cols, $num_rows ) = $xlsx->dimension($sheetkey);
@@ -61,6 +164,11 @@ if ($xlsx = SimpleXLSX::parse('../uploads_massaudit/UHS BEHAVORIAL HEALTH (UHB15
         }
     }
 
+    if (is_null($colindex_SKU) || is_null($colindex_STATUS)) {
+        unlink($target_file);
+        exit($errorprefix . 'There is not a column named "Status" and/or "SKU".  Please correct and upload again.' . $errorpostfix . $clearfile);
+    }
+
 
     //Build data array from start row to last row using key columns and posted data
     foreach ($xlsx->rows($sheetkey) as $r) {
@@ -86,27 +194,34 @@ if ($xlsx = SimpleXLSX::parse('../uploads_massaudit/UHS BEHAVORIAL HEALTH (UHB15
 
     //update the auditcomplete with the just updatedassigned tasks table
     //will have to pull in fill rate info by customer id grouping
-    
-    
-    
+    $frbefore = $fr_array[0]['BEFFRMNT_EXCLDS'];
+    $frafter = $fr_array[0]['AFTFRMNT_EXCLDS'];
+    $shipacc = $fr_array[0]['SHIPACCMONTH'];
+    $dmgacc = $fr_array[0]['DMGACCMONTH'];
+    $addscacc = $fr_array[0]['ADDSCACCMONTH'];
+    $osc = $fr_array[0]['OSCMONTH_EXCLDS'];
+    $scoremnt = intval($fr_array[0]['SCOREMONTH']);
+    $scoreqtr = intval($fr_array[0]['SCOREQUARTER']);
+    $scorerol12 = intval($fr_array[0]['SCOREROLL12']);
+    $complete_comment = 'Added through mass audit tool by ' . $var_userid;
+
+    $data_auditcomplete[] = "(0,'$var_userid', '$var_custtype', '$var_custid', '$now', '$frbefore', '$frafter', '$shipacc', '$dmgacc', '$addscacc', '$osc', $scoremnt, $scoreqtr, $scorerol12, '$complete_comment', '$usergroup')";
+    $values2 = implode(',', $data_auditcomplete);
+    $columns_auditcomplete = 'auditcomplete_id, auditcomplete_user, auditcomplete_custtype, auditcomplete_custid, auditcomplete_date, auditcompletecol_FRBEF, auditcomplete_FRAFT, auditcomplete_SHIPACC, auditcomplete_DMG, auditcomplete_SCDESC, auditcomplete_OSC, auditcomplete_SCOREMNT, auditcomplete_SCOREQTR, auditcomplete_SCORER12, auditcomplete_COMMENT, auditcomplete_USERGROUP';
+    if (!empty($values2)) {
+        $sql2 = "INSERT INTO slotting.auditcomplete ($columns_auditcomplete) VALUES $values2";
+        $query2 = $conn1->prepare($sql2);
+        $query2->execute();
+    }
 } else {
     echo SimpleXLSX::parse_error();
 }
 
-
-
-
-
-$today = date('Y-m-d');
-$target_dir = "uploads_massaudit/";
-$target_basename = basename($_FILES["file"]["name"]);
-$target_file = $target_dir . $target_basename;
-$uploadOk = 1;
-$imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
-
+//insert upload data to table custaudit_massaudituploads
 $columns = 'upload_custid, upload_custtype, upload_filename, upload_filetype, upload_date, upload_tsm';
-
-
-$sql = "INSERT INTO slotting.custaudit_uploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
+$sql = "INSERT INTO slotting.custaudit_massaudituploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
 $query = $conn1->prepare($sql);
 $query->execute();
+
+//clear the group id and file ids
+echo $cleargroupid . $clearfile;
