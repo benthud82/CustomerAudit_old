@@ -23,7 +23,7 @@ if (isset($_GET['salesplan'])) {
     $sql_cfr_incl = "SELECT 
                                     group_SHIPTO
                                 FROM
-                                    slotting.scorecard_groupingdetail
+                                    custaudit.scorecard_groupingdetail
                                 WHERE
                                     group_MASTERID = $var_salesplan;";
     $query_cfr_incl = $conn1->prepare($sql_cfr_incl);
@@ -54,7 +54,7 @@ if ($enddate > 0) {
 
 switch ($var_numtype) {
     case 'billto':
-        $result1 = $conn1->prepare("SELECT * FROM slotting.ordershipcomplete WHERE BILLTONUM = $var_cust and ORDDATE >= $var_rollmonthjdate and ORDDATE <= $var_rollmonthenddate");
+        $result1 = $conn1->prepare("SELECT * FROM custaudit.ordershipcomplete WHERE BILLTONUM = $var_cust and ORDDATE >= $var_rollmonthjdate and ORDDATE <= $var_rollmonthenddate");
         $result1->execute();
         $result1array = $result1->fetchAll(pdo::FETCH_ASSOC);
         break;
@@ -62,9 +62,9 @@ switch ($var_numtype) {
         $result1 = $conn1->prepare("SELECT 
                                         *
                                     FROM
-                                        slotting.ordershipcomplete A
+                                        custaudit.ordershipcomplete A
                                             join
-                                        slotting.salesplan B ON A.BILLTONUM = B.BILLTO
+                                        custaudit.salesplan B ON A.BILLTONUM = B.BILLTO
                                             and A.SHIPTONUM = B.SHIPTO
                                     WHERE
                                         SALESPLAN = '$var_cust'
@@ -73,12 +73,12 @@ switch ($var_numtype) {
         $result1array = $result1->fetchAll(pdo::FETCH_ASSOC);
         break;
     case 'shipto':
-        $result1 = $conn1->prepare("SELECT * FROM slotting.ordershipcomplete WHERE SHIPTONUM = $var_cust and ORDDATE >= $var_rollmonthjdate  and ORDDATE <= $var_rollmonthenddate");
+        $result1 = $conn1->prepare("SELECT * FROM custaudit.ordershipcomplete WHERE SHIPTONUM = $var_cust and ORDDATE >= $var_rollmonthjdate  and ORDDATE <= $var_rollmonthenddate");
         $result1->execute();
         $result1array = $result1->fetchAll(pdo::FETCH_ASSOC);
         break;
     case 'custom':
-        $result1 = $conn1->prepare("SELECT * FROM slotting.ordershipcomplete WHERE SHIPTONUM in $imp_cfr_include and ORDDATE >= $var_rollmonthjdate  and ORDDATE <= $var_rollmonthenddate");
+        $result1 = $conn1->prepare("SELECT * FROM custaudit.ordershipcomplete WHERE SHIPTONUM in $imp_cfr_include and ORDDATE >= $var_rollmonthjdate  and ORDDATE <= $var_rollmonthenddate");
         $result1->execute();
         $result1array = $result1->fetchAll(pdo::FETCH_ASSOC);
         break;

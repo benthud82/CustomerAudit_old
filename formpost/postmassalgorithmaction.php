@@ -14,21 +14,21 @@ $actiontaken = intval($_POST['actiontaken']);
 
 switch ($algorithm) {
     case 'DAMAGE':
-        $idsql = $conn1->prepare("SELECT damage_whse, damage_item from slotting.massalgorithm_damage_recs WHERE damage_id = $assigntask_id ");
+        $idsql = $conn1->prepare("SELECT damage_whse, damage_item from custaudit.massalgorithm_damage_recs WHERE damage_id = $assigntask_id ");
         $idsql->execute();
         $idsqlarray = $idsql->fetchAll(pdo::FETCH_ASSOC);
         $whsemodal = $idsqlarray[0]['damage_whse'];
         $itemmodal = $idsqlarray[0]['damage_item'];
         break;
     case 'SKUOPT':
-        $idsql = $conn1->prepare("SELECT skuopt_whse, skuopt_item from slotting.massalgorithm_skuopt_recs WHERE skuopt_id = $assigntask_id ");
+        $idsql = $conn1->prepare("SELECT skuopt_whse, skuopt_item from custaudit.massalgorithm_skuopt_recs WHERE skuopt_id = $assigntask_id ");
         $idsql->execute();
         $idsqlarray = $idsql->fetchAll(pdo::FETCH_ASSOC);
         $whsemodal = $idsqlarray[0]['skuopt_whse'];
         $itemmodal = $idsqlarray[0]['skuopt_item'];
         break;
     case 'SHIPACC':
-        $idsql = $conn1->prepare("SELECT shipacc_whse, shipacc_item from slotting.massalgorithm_shipacc_recs WHERE shipacc_id = $assigntask_id ");
+        $idsql = $conn1->prepare("SELECT shipacc_whse, shipacc_item from custaudit.massalgorithm_shipacc_recs WHERE shipacc_id = $assigntask_id ");
         $idsql->execute();
         $idsqlarray = $idsql->fetchAll(pdo::FETCH_ASSOC);
         $whsemodal = $idsqlarray[0]['shipacc_whse'];
@@ -43,6 +43,6 @@ switch ($algorithm) {
 $columns = 'ma_id, ma_whse, ma_item, ma_algorithm, ma_action, ma_comment, ma_date, ma_TSM';
 $values = "0, $whsemodal, $itemmodal, '$algorithm',  $actiontaken, '$comment', '$date', '$useridmodal'";
 
-$sql = "INSERT INTO slotting.massalgorithm_actions ($columns) VALUES ($values)";
+$sql = "INSERT INTO custaudit.massalgorithm_actions ($columns) VALUES ($values)";
 $query = $conn1->prepare($sql);
 $query->execute();

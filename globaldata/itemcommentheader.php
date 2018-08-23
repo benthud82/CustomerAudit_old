@@ -6,8 +6,8 @@ $var_itemcode = ($_POST['itemcode']);
 $itemcommentssql = $conn1->prepare("SELECT 
                                         *
                                     FROM
-                                        slotting.custaudit_itemcomments
-                                    JOIN slotting.customeraudit_users on customeraudit_users_ID = itemcomments_tsm
+                                        custaudit.custaudit_itemcomments
+                                    JOIN custaudit.customeraudit_users on customeraudit_users_ID = itemcomments_tsm
                                     WHERE
                                         itemcomments_item = $var_itemcode
                                     ORDER BY itemcomments_date DESC;");

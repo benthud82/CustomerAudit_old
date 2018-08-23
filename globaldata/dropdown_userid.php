@@ -6,14 +6,14 @@ $mygroupdata = $_GET['group'];
 
 //find group
 //$mygroup = $conn1->prepare("SELECT customeraudit_users_GROUP
-//                            FROM slotting.customeraudit_users
+//                            FROM custaudit.customeraudit_users
 //                            WHERE customeraudit_users_ID = '$var_userid'");
 //$mygroup->execute();
 //$mygrouparray = $mygroup->fetchAll(pdo::FETCH_ASSOC);
 //$mygroupdata = $mygrouparray[0]['customeraudit_users_GROUP'];
 
 
-$users = $conn1->prepare("SELECT * FROM slotting.customeraudit_users WHERE customeraudit_users_GROUP = '$mygroupdata';");
+$users = $conn1->prepare("SELECT * FROM custaudit.customeraudit_users WHERE customeraudit_users_GROUP = '$mygroupdata';");
 $users->execute();
 $usersarray = $users->fetchAll(pdo::FETCH_ASSOC);
 ?>

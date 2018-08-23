@@ -11,7 +11,7 @@ $var_add_masterdesc = ($_POST['add_masterdesc']);
 $inmaster = $conn1->prepare("SELECT 
                                                             mastergroupings_GROUPID
                                                         FROM
-                                                            slotting.scorecard_mastergroupings
+                                                            custaudit.scorecard_mastergroupings
                                                         WHERE
                                                             mastergroupings_NAME = '$var_add_mastername';");
 $inmaster->execute();
@@ -22,7 +22,7 @@ if ($inmaster_count > 0) {
     $masterinsertsuccess = 0;
 } else {
     //add to scorecard_mastergroupings
-    $insertmaster = "INSERT INTO slotting.scorecard_mastergroupings (mastergroupings_GROUPID, mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED) VALUES (0,'$var_add_mastername', '$var_add_masterdesc','$var_userid', '$datetime' )";
+    $insertmaster = "INSERT INTO custaudit.scorecard_mastergroupings (mastergroupings_GROUPID, mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED) VALUES (0,'$var_add_mastername', '$var_add_masterdesc','$var_userid', '$datetime' )";
     $queryinsert = $conn1->prepare($insertmaster);
     $queryinsert->execute();
 

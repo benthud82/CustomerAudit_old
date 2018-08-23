@@ -10,9 +10,9 @@ $salesplan = $conn1->prepare("SELECT
                                                                 trim(S.SHIPTONUM) as SHIPTONUM,
                                                                 trim(S.SHIPTONAME) as SHIPTONAME
                                                             FROM
-                                                                slotting.salesplan P
+                                                                custaudit.salesplan P
                                                                     JOIN
-                                                                slotting.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
+                                                                custaudit.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
                                                             WHERE SALESPLAN = '$uppersearchterm'");
 $salesplan->execute();
 $salesplansearcharray = $salesplan->fetchAll(pdo::FETCH_ASSOC);

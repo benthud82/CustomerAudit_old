@@ -13,9 +13,9 @@ $itemauditsql = $conn1->prepare("SELECT
     customeraction_comptasks_COMPDATE,
     customeraction_comptasks_COMMENT
 FROM
-    slotting.customeraction_asgntasks
+    custaudit.customeraction_asgntasks
         LEFT JOIN
-    slotting.customeraction_comptasks ON assign_task_ID = idcustomeraction_asgntasks
+    custaudit.customeraction_comptasks ON assign_task_ID = idcustomeraction_asgntasks
     WHERE customeraction_asgntasks_ITEM = $var_itemcode
         ORDER BY (customeraction_asgntasks_DATE) DESC");
 $itemauditsql->execute();

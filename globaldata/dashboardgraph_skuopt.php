@@ -10,7 +10,7 @@ include_once '../connection/connection_details.php';
 $result1 = $conn1->prepare("SELECT 
                                                         skuopt_summ_date as skuoptdate, SUM(skuopt_summ_count) as skuoptcount
                                                     FROM
-                                                        slotting.massalgorithm_skuopt_summary
+                                                        custaudit.massalgorithm_skuopt_summary
                                                     GROUP BY skuopt_summ_date;");
 $result1->execute();
 

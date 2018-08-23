@@ -14,7 +14,7 @@ $mytasks = $conn1->prepare("SELECT idcustomeraction_asgntasks,
                                    customeraction_asgntasks_ITEM, 
                                    customeraction_asgntasks_COMMENT,
                                    ' '
-                            FROM slotting.customeraction_asgntasks 
+                            FROM custaudit.customeraction_asgntasks 
                             WHERE customeraction_asgntasks_STATUS = 'OPEN' and UPPER(customeraction_asgntasks_TOTSM) = '$var_userid'
                             ORDER BY customeraction_asgntasks_DATE asc;");
 $mytasks->execute();

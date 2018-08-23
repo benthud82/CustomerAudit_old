@@ -5,11 +5,11 @@ $uppersearchterm = strtoupper($_POST['searchterm']);
 $salesplan = $conn1->prepare("SELECT DISTINCT
                                     B.SALESPLAN, A.BILLTONUM, A.BILLTONAME,  A.TOTR12LINES,A.TOTR12SALES
                                 FROM
-                                    slotting.customerscores_billto A
+                                    custaudit.customerscores_billto A
                                         join
-                                    slotting.salesplan B ON BILLTO = BILLTONUM
+                                    custaudit.salesplan B ON BILLTO = BILLTONUM
                                 WHERE
-                                    UPPER(A.BILLTONAME) like ('%$uppersearchterm%')
+                                    (UPPER(A.BILLTONAME) like ('%$uppersearchterm%') or A.BILLTONUM like ('%$uppersearchterm%'))
                                 ORDER BY A.TOTR12LINES DESC;");
 $salesplan->execute();
 $salesplansearcharray = $salesplan->fetchAll(pdo::FETCH_ASSOC);

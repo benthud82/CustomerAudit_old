@@ -1,9 +1,20 @@
 
 <?php
-include '../../globalfunctions/custdbfunctions.php';
-include_once '../connection/connection_details.php';
-$var_cust = $_POST['salesplan'];  //transfers over as bill to, but this is the salesplan
+if (file_exists('../../globalfunctions/custdbfunctions.php')) {
+    include_once '../../globalfunctions/custdbfunctions.php';
+} else {
+    include_once '../globalfunctions/custdbfunctions.php';
+}
 
+if (file_exists('../connection/connection_details.php')) {
+    include_once '../connection/connection_details.php';
+} else {
+    include_once 'connection/connection_details.php';
+}
+
+if (!empty($_POST['salesplan'])) {
+    $var_cust = $_POST['salesplan'];  //transfers over as bill to, but this is the salesplan
+}
 $result1 = $conn1->prepare("SELECT * FROM customerscores_salesplan WHERE SALESPLAN LIKE '$var_cust'");
 $result1->execute();
 
@@ -90,47 +101,47 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
 ?>
 <!--Top level summary data-->
 <div class="row" style="padding-bottom: 20px; padding-top: 20px"> 
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3 "> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body "> 
-                <i class="fa fa-line-chart fa fa-2x text"></i><div class="h4">Rolling 12 Month Lines</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo number_format($TOTR12LINES); ?> </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body"> 
-                <i class="fa fa-dollar fa fa-2x text"></i><div class="h4">Rolling 12 Sales</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo '$' . number_format($TOTR12SALES); ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body"> 
-                <i class="fa fa-area-chart fa fa-2x text"></i><div class="h4">Rolling 12 Before Fill Rate</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo $BEFFRR12_EXCLDS ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center <?php // echo ($statclassr12); ?>"> 
-            <div class="panel-body"> 
-                <i class="fa fa-user fa fa-2x text"></i><div class="h4">Rolling 12 Score</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo $CUSTSCORER12_EXCLDS ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3 "> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body "> 
+                    <i class="fa fa-line-chart fa fa-2x text"></i><div class="h4">Rolling 12 Month Lines</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo number_format($TOTR12LINES);  ?> </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-dollar fa fa-2x text"></i><div class="h4">Rolling 12 Sales</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo '$' . number_format($TOTR12SALES);  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-area-chart fa fa-2x text"></i><div class="h4">Rolling 12 Before Fill Rate</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo $BEFFRR12_EXCLDS  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center <?php // echo ($statclassr12);  ?>"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-user fa fa-2x text"></i><div class="h4">Rolling 12 Score</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo $CUSTSCORER12_EXCLDS  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
 </div>
 
-<div class="row" style="padding-bottom: 10px; padding-top: 10px;">
+<div class="row " style="padding-bottom: 10px; padding-top: 10px; ">
     <!--Customer Scorecard Panels for month/quarter/rolling 12-->
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  col-print-4">
         <!-- Current Month Panel -->            
         <section class="panel">
             <header class="panel-heading bg  h3 text-center <?php echo ($panelclassmnt); ?>">Rolling Month </header>
@@ -201,7 +212,7 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
             </div>
         </section>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-print-4">
         <!-- Current Quarter Panel -->            
         <section class="panel"> 
             <header class="panel-heading bg h3 text-center <?php echo ($panelclassqtr); ?>">Rolling Quarter </header>
@@ -272,7 +283,7 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
             </div>
         </section>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 col-print-4">
         <!-- Current R12 Panel -->            
         <section class="panel"> 
             <header class="panel-heading bg h3 text-center <?php echo ($panelclassr12); ?>">Rolling 12 Months </header>

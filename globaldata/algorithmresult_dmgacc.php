@@ -44,8 +44,8 @@ $dmgaccresult = $conn1->prepare("SELECT
                                             else 0
                                         end) as RETURNS_YEAR
                                     FROM
-                                        slotting.custreturns A
-                                    JOIN slotting.custreturnmetrics B on A.RETURNCODE = B.RETURNCODE
+                                        custaudit.custreturns A
+                                    JOIN custaudit.custreturnmetrics B on A.RETURNCODE = B.RETURNCODE
                                     WHERE
                                         ITEMCODE = '$var_itemcode' and A.RETURNCODE in ('CRID','TDNR')
                                     GROUP BY A.RETURNCODE;");

@@ -27,12 +27,13 @@
             <ul class="dropdown-menu"> 
                 <li><a href="search.php">Search</a></li> 
                 <li><a href="customgroups.php">Custom Groups</a></li> 
+                <li><a href="auditupload.php">Mass Audit Upload</a></li> 
             </ul> 
         </li>
         <li id="history"><a href="audithistory.php"><i class="fa fa-check-square fa-lg"></i><span>Audit HIstory</span></a></li> 
         <li id="changelog"><a href="changelog.php"><i class="fa fa-cogs fa-lg"></i><span>Change Log</span></a></li> 
-<!--        <li id="loose"><a href="looseslotting.php"><i class="fa fa-stack-overflow fa-lg"></i><span>Loose<br>Slotting</span></a></li> 
-        <li id="case"><a href="caseslotting.php"><i class="fa fa-cubes fa-lg"></i><span>Case<br>Slotting</span></a></li> 
+<!--        <li id="loose"><a href="loosecustaudit.php"><i class="fa fa-stack-overflow fa-lg"></i><span>Loose<br>Slotting</span></a></li> 
+        <li id="case"><a href="casecustaudit.php"><i class="fa fa-cubes fa-lg"></i><span>Case<br>Slotting</span></a></li> 
         <li id="reports" class="dropdown-submenu"> <a ><i class="fa fa-th fa-lg"></i><span>Reports</span></a> 
             <ul class="dropdown-menu"> 
                 <li><a href="itemquery.php">Item Query</a></li> 

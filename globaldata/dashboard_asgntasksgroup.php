@@ -5,7 +5,7 @@ $var_userid = strtoupper($_GET['userid']);
 
 //find group
 $mygroup= $conn1->prepare("SELECT customeraudit_users_GROUP
-                            FROM slotting.customeraudit_users
+                            FROM custaudit.customeraudit_users
                             WHERE customeraudit_users_ID = '$var_userid'");
 $mygroup->execute();
 $mygrouparray = $mygroup->fetchAll(pdo::FETCH_ASSOC);
@@ -22,7 +22,7 @@ $mytasks = $conn1->prepare("SELECT idcustomeraction_asgntasks,
                                    customeraction_asgntasks_ITEM, 
                                    customeraction_asgntasks_COMMENT,
                                    ' '
-                            FROM slotting.customeraction_asgntasks 
+                            FROM custaudit.customeraction_asgntasks 
                             WHERE customeraction_asgntasks_STATUS = 'OPEN' and customeraction_asgntasks_GROUP = '$mygroupdata' and UPPER(customeraction_asgntasks_TOTSM) <> '$var_userid'
                             ORDER BY customeraction_asgntasks_DATE asc;");
 $mytasks->execute();

@@ -19,12 +19,20 @@
 
         <section id="content"> 
             <section class="main padder"> 
-                
-                <!--MBO Tracking--> 
-                
-                
-                <!--End of MBO Tracking-->
-                
+                <div class="hidewrapper">
+                    <section class="panel" id="section_scoreavg" style="margin-bottom: 50px; margin-top: 20px;"> 
+                        <header class="panel-heading bg bg-inverse h3">30 Day Score Averages<i class="fa fa-close pull-right closehidden" style="cursor: pointer;" id="close_scoreavg"></i><i class="fa fa-chevron-up pull-right clicktotoggle-chevron" style="cursor: pointer;"></i></header>
+                        <div id="graphcont_scoreavg" class="panel-body" style="background: #efefef">
+                            <div id="scoretrend"></div>
+                            <div id="graph_scoreavg"  class="page-break" style="width: 100%">
+                                <div class="printrotate " id="charts padded">
+                                    <div id="container_scoreavg" class="largecustchartstyle "></div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
                 <div class="row" style="padding-bottom: 25px; padding-top: 20px;">
                     <!--My Score Impact-->
                     <div class="col-sm-12 col-xl-4">
@@ -654,7 +662,6 @@
                     'sAjaxSource': "globaldata/dashboard_comptasks.php?userid=" + userid
                 });
 
-
                 //fill the most recent connection divs $recentconnections
                 $.ajax({
                     url: 'globaldata/dashboard_recentconnections.php', //url for the ajax.  Variable numtype is either salesplan, billto, shipto
@@ -675,6 +682,106 @@
                         //                        $("#myscoreimpact").html(ajaxresult);
                     }
                 });
+
+                //Score averages graph
+                var options = {
+                    chart: {
+                        marginTop: 50,
+                        marginBottom: 135,
+                        renderTo: 'container_scoreavg',
+                        type: 'spline'
+                    }, credits: {
+                        enabled: false
+                    },
+                    plotOptions: {
+                        spline: {
+                            marker: {
+                                enabled: false
+                            }
+                        },
+                        series: {
+                            cursor: 'pointer',
+                            dataLabels: {
+                                enabled: false,
+                                verticalAlign: 'top',
+                                color: '#000000',
+                                connectorColor: '#000000',
+                                formatter: function () {
+                                    return Highcharts.numberFormat(this.y, 2) + ' %';
+                                }
+                            },
+                            point: {
+                                events: {
+                                    click: function () {
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    title: {
+                        text: ' '
+                    },
+                    xAxis: {
+                        categories: [], labels: {
+                            rotation: -90,
+                            y: 25,
+                            align: 'right',
+                            step: 5,
+                            style: {
+                                fontSize: '12px',
+                                fontFamily: 'Verdana, sans-serif'
+                            }
+                        },
+                        legend: {
+                            y: "10",
+                            x: "5"
+                        }
+
+                    },
+                    yAxis: {
+                        title: {
+                            text: 'Weekly Score Averages'
+                        },
+                        plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }],
+                        opposite: true
+                    }, tooltip: {
+                        formatter: function () {
+                            return '<b>' + this.series.name + '</b><br/>' +
+                                    this.x + ': ' + Highcharts.numberFormat(this.y, 2);
+                        }
+                    },
+                    series: []
+                };
+                $.ajax({
+                    url: 'globaldata/graph_scoreavg.php',
+//                    data: {"salesplan": salesplan},
+                    type: 'GET',
+                    dataType: 'json',
+                    async: 'true',
+                    success: function (json) {
+                        options.xAxis.categories = json[0]['data'];
+                        options.series[0] = json[1];
+                        options.series[1] = json[2];
+                        options.series[2] = json[3];
+                        chart = new Highcharts.Chart(options);
+                        series = chart.series;
+                    }
+                });
+            });
+
+            //Trend calc and current score average info box
+            $.ajax({
+                url: 'globaldata/scoreavgtrend.php',
+                type: 'POST',
+                dataType: 'html',
+//                    data: {userid: userid, itemnum: itemnum},
+                success: function (result) {
+                    $("#scoretrend").html(result);
+                }
             });
 
             //jquery to show add comments modal and fill relevant fields with clicked info
@@ -872,12 +979,11 @@
                 }
             });
 
-
             $(document).on("click touchstart", ".helpclick", function (e) {
                 $('#helpclickmodal').modal('toggle');
                 $('#itemdetailcontainerloading').toggleClass('hidden');
                 $('#divtablecontainer').addClass('hidden');
-                var clickedid = $(this).attr('id'); 
+                var clickedid = $(this).attr('id');
                 var userid = $('#userid').text();
                 debugger;
                 $.ajax({

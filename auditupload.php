@@ -8,6 +8,14 @@
         <?php include_once 'headerincludes.php'; ?>
     </head>
 
+    <style media="screen" type="text/css">
+        td {
+
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            cursor: pointer;
+        }
+    </style>
     <body style="">
         <!--include horz nav php file-->
         <?php include_once 'horizontalnav.php'; ?>
@@ -19,7 +27,6 @@
             <section class="main padder"> 
 
                 <div class="" style="padding-bottom: 25px; padding-top: 20px;">
-
                     <div class="row" style="padding-bottom: 25px;"> 
 
                         <div class="col-md-3 col-sm-3 col-xs-12 col-lg-2 col-xl-2 text-center">
@@ -48,7 +55,6 @@
                     </div>
                 </div>
 
-
                 <div id="modal_uploadstatus" class="modal fade " role="dialog">
                     <div class="modal-dialog modal-lg">
 
@@ -63,6 +69,30 @@
                                 <div id="ajaxresult"></div>
                             </div>
 
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="pull-left" style="margin-left: 15px" >
+                        <button id="loaddata" type="button" class="btn btn-info" onclick="gettable();" style="margin-bottom: 5px;">Load Recently Uploaded Files</button>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-sm-12">
+                        <div id="tablecontainer" class="hidden">
+                            <table id="tbl_massaudituploads" class="table table-bordered" cellspacing="0" style="font-size: 14px; font-family: Calibri;">
+                                <thead>
+                                    <tr>
+                                        <th>File Name</th>
+                                        <th>Customer Type</th>
+                                        <th>Customer ID</th>
+                                        <th>Upload Date</th>
+                                        <th>Upload TSM</th>
+                                    </tr>
+                                </thead>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -100,13 +130,39 @@
                     processData: false, // tell jQuery not to process the data
                     contentType: false, // tell jQuery not to set contentType
                     success: function (data) {
+                        $('#tablecontainer').addClass('hidden');
                         $("#ajaxresult").html(data);
                         //clear the file from upload
-                        document.getElementById('fileToUpload').value = null;
+
                     }
                 });
             });
 
+
+            function gettable() { //table displaying all customer info
+
+                $('#tablecontainer').removeClass('hidden');
+
+                oTable = $('#tbl_massaudituploads').DataTable({
+                    dom: "<'row'<'col-sm-4 pull-left'l><'col-sm-4 pull-right'f>>" + "<'row'<'col-sm-12'tr>>" + "<'row'<'col-sm-4 pull-left'i><'col-sm-8 pull-right'p>>",
+                    destroy: true,
+                    "order": [[4, "desc"]],
+                    "scrollX": true,
+                    'sAjaxSource': "globaldata/massaudit_uploadedfiles.php",
+                    "aoColumnDefs": [
+                        {
+                            "aTargets": [0], // Column to target
+                            "mRender": function (data, type, full) {
+                                // 'full' is the row's data object, and 'data' is this column's data
+                                // e.g. 'full[0]' is the comic id, and 'data' is the comic title
+
+                                return '<a href="uploads_massaudit/' + full[0] + '" target="_blank">' + data + '</a>';
+                            }
+                        }
+                    ]
+                });
+                $('#tablecontainer').removeClass('hidden');
+            }
 
 
         </script>

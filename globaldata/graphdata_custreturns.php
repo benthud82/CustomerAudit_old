@@ -43,7 +43,7 @@ set_time_limit(99999);
 switch ($var_custtype) {
     case 'salesplan':
 //find billto/shipto combinations in salesplan table
-        $billtoquery = $conn1->prepare("SELECT DISTINCT BILLTO FROM slotting.salesplan WHERE SALESPLAN like '$var_cust';");
+        $billtoquery = $conn1->prepare("SELECT DISTINCT BILLTO FROM custaudit.salesplan WHERE SALESPLAN like '$var_cust';");
         $billtoquery->execute();
         $billtocolumns = $billtoquery->fetchAll(pdo::FETCH_COLUMN);
         $billtoinclude = "('" . implode("','", $billtocolumns) . "')";
@@ -83,9 +83,9 @@ switch ($var_custtype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     SALESPLAN = '$var_cust'
@@ -198,9 +198,9 @@ switch ($var_custtype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     BILLTONUM = $var_cust
@@ -312,9 +312,9 @@ switch ($var_custtype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     SHIPTONUM = $var_cust
@@ -352,7 +352,7 @@ switch ($var_custtype) {
             $rows['data'][] = substr($value, 0, 4) . '-' . substr($value, 4, 2);  //Push fiscal month-year to array
 
             $resultkeyinvoice = _arraykeysearch($invlinesarray, 'FISCMONTH', $value);
-            if ($resultkeyinvoice >= 0) {
+            if ($resultkeyinvoice === true) {
                 $invoicelines = intval($invlinesarray[$resultkeyinvoice[0]]['TOTLINES']);
             } else {
                 $invoicelines = 0;
@@ -394,7 +394,7 @@ switch ($var_custtype) {
         $billtoquery = $conn1->prepare("SELECT 
                                                                         group_SHIPTO
                                                                     FROM
-                                                                        slotting.scorecard_groupingdetail
+                                                                        custaudit.scorecard_groupingdetail
                                                                     WHERE
                                                                         group_MASTERID = $var_cust;");
         $billtoquery->execute();
@@ -437,9 +437,9 @@ switch ($var_custtype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     SHIPTONUM in $billtoinclude2

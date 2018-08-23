@@ -12,7 +12,7 @@ $var_shiptoarray = ($_POST['shiptoarray']);
 $masteridsql = "SELECT 
                                     mastergroupings_GROUPID
                                 FROM
-                                    slotting.scorecard_mastergroupings
+                                    custaudit.scorecard_mastergroupings
                                 WHERE
                                     mastergroupings_NAME = '$var_add_mastername';";
 $masteridquery = $conn1->prepare($masteridsql);
@@ -53,7 +53,7 @@ do {
     if (empty($values)) {
         break;
     }
-    $sql = "INSERT IGNORE INTO slotting.scorecard_groupingdetail ($columns) VALUES $values";
+    $sql = "INSERT IGNORE INTO custaudit.scorecard_groupingdetail ($columns) VALUES $values";
     $query = $conn1->prepare($sql);
     $query->execute();
     $maxrange += 5000;

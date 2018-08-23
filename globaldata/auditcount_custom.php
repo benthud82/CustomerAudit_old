@@ -6,7 +6,7 @@ $var_customnumber = intval($_POST['customnumber']);
 $auditcountsql = $conn1->prepare("SELECT 
                                                                 COUNT(*) as auditcount
                                                             FROM
-                                                                slotting.auditcomplete
+                                                                custaudit.auditcomplete
                                                             WHERE
                                                                 auditcomplete_custtype = 'CUSTOMGROUP'
                                                                     AND auditcomplete_custid = $var_customnumber

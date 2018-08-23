@@ -1,7 +1,16 @@
 
 <?php
-include '../../globalfunctions/custdbfunctions.php';
-include_once '../connection/connection_details.php';
+if (file_exists('../../globalfunctions/custdbfunctions.php')) {
+    include_once '../../globalfunctions/custdbfunctions.php';
+} else {
+    include_once '../globalfunctions/custdbfunctions.php';
+}
+
+if (file_exists('../connection/connection_details.php')) {
+    include_once '../connection/connection_details.php';
+} else {
+    include_once 'connection/connection_details.php';
+}
 $var_cust = $_POST['shipto'];  //transfers over as bill to, but this is the salesplan
 
 $result1 = $conn1->prepare("SELECT * FROM customerscores_shipto WHERE SHIPTONUM = $var_cust");
@@ -130,7 +139,7 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
 
 <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
     <!--Customer Scorecard Panels for month/quarter/rolling 12-->
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  col-print-4">
         <!-- Current Month Panel -->            
         <section class="panel">
             <header class="panel-heading bg  h3 text-center <?php echo ($panelclassmnt); ?>">Rolling Month </header>
@@ -201,7 +210,7 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
             </div>
         </section>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  col-print-4">
         <!-- Current Quarter Panel -->            
         <section class="panel"> 
             <header class="panel-heading bg h3 text-center <?php echo ($panelclassqtr); ?>">Rolling Quarter </header>
@@ -272,7 +281,7 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
             </div>
         </section>
     </div>
-    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  panel-no-page-break">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12  col-print-4">
         <!-- Current R12 Panel -->            
         <section class="panel"> 
             <header class="panel-heading bg h3 text-center <?php echo ($panelclassr12); ?>">Rolling 12 Months </header>

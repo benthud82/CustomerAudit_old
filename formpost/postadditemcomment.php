@@ -4,7 +4,7 @@
 include_once '../connection/connection_details.php';
 include '../sessioninclude.php';
 $var_userid = $_SESSION['MYUSER'];
-//$whssql = $conn1->prepare("SELECT slottingDB_users_PRIMDC from slotting.slottingdb_users WHERE idslottingDB_users_ID = '$var_userid'");
+//$whssql = $conn1->prepare("SELECT slottingDB_users_PRIMDC from custaudit.slottingdb_users WHERE idslottingDB_users_ID = '$var_userid'");
 //$whssql->execute();
 //$whssqlarray = $whssql->fetchAll(pdo::FETCH_ASSOC);
 //$var_whse = $whssqlarray[0]['slottingDB_users_PRIMDC'];
@@ -22,7 +22,7 @@ $columns = 'itemcomments_id, itemcomments_item, itemcomments_tsm, itemcomments_d
 $values = "0, $var_itemmodal, '$var_userid' , '$datetime', '$var_descriptionmodal', '$var_commentmodal'";
 
 
-$sql = "INSERT INTO slotting.custaudit_itemcomments ($columns) VALUES ($values)";
+$sql = "INSERT INTO custaudit.custaudit_itemcomments ($columns) VALUES ($values)";
 $query = $conn1->prepare($sql);
 $query->execute();
 

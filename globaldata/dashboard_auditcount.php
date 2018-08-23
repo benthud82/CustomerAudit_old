@@ -8,7 +8,7 @@ $monthlyauditgoal_all = 200;
 
 //find group
 $mygroup = $conn1->prepare("SELECT customeraudit_users_GROUP
-                            FROM slotting.customeraudit_users
+                            FROM custaudit.customeraudit_users
                             WHERE UPPER(customeraudit_users_ID = '$var_userid')");
 $mygroup->execute();
 $mygrouparray = $mygroup->fetchAll(pdo::FETCH_ASSOC);
@@ -33,9 +33,9 @@ $imapact_salesplan = $conn1->prepare("SELECT
                                                                             COUNT(*) AS SALESPLANAUDITS_TOTAL,
                                                                             AVG((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) AS SPIMPACT_TOTAL
                                                                         FROM
-                                                                            slotting.auditcomplete
+                                                                            custaudit.auditcomplete
                                                                                 JOIN
-                                                                            slotting.scorecard_display_salesplan ON SALESPLAN = auditcomplete_custid
+                                                                            custaudit.scorecard_display_salesplan ON SALESPLAN = auditcomplete_custid
                                                                         WHERE
                                                                             auditcomplete_custtype = 'SALESPLAN'
                                                                                 AND auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
@@ -78,9 +78,9 @@ $imapact_billto = $conn1->prepare("SELECT
                                             count(*) as BILLTOAUDITS_TOTAL,
                                             AVG((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as BTIMPACT_TOTAL
                                         FROM
-                                            slotting.auditcomplete
+                                            custaudit.auditcomplete
                                                 JOIN
-                                            slotting.scorecard_display_billto ON BILLTONUM = auditcomplete_custid
+                                            custaudit.scorecard_display_billto ON BILLTONUM = auditcomplete_custid
                                         WHERE
                                             auditcomplete_custtype = 'BILLTO'
                                                 and auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)");
@@ -120,9 +120,9 @@ $imapact_shipto = $conn1->prepare("SELECT DISTINCT
                                             count(*) as SHIPTOAUDITS_TOTAL,
                                             AVG((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as STIMPACT_TOTAL
                                         FROM
-                                            slotting.auditcomplete
+                                            custaudit.auditcomplete
                                                 JOIN
-                                            slotting.scorecard_display_shipto ON SHIPTONUM = auditcomplete_custid
+                                            custaudit.scorecard_display_shipto ON SHIPTONUM = auditcomplete_custid
                                         WHERE
                                             auditcomplete_custtype = 'SHIPTO'
                                                 and auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)");

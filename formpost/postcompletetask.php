@@ -68,7 +68,7 @@ $columns = 'idcustomeraction_comptasks, customeraction_comptasks_ASGNTSM, custom
 $values = "0, '$var_ASGNTSM', '$var_TOTSM', '$var_DATE', '$datetime', '$var_GROUP', $var_ITEM, '$custgroup', '$custid', '$var_comment', $var_correct, '$var_frbefore', '$var_frafter', '$var_shipacc', '$var_dmg', '$var_scdesc', '$var_osc', $var_score_month, $var_score_quarter, $var_score_r12,$var_assigntask_id";
 
 
-$sql = "INSERT INTO slotting.customeraction_comptasks ($columns) VALUES ($values)";
+$sql = "INSERT INTO custaudit.customeraction_comptasks ($columns) VALUES ($values)";
 $query = $conn1->prepare($sql);
 $query->execute();
 

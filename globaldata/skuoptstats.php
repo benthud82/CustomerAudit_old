@@ -7,7 +7,7 @@ session_write_close();
 $skuoptsql = $conn1->prepare("SELECT 
                                                             COUNT(*) as skucount, SUM(ma_action) as added
                                                         FROM
-                                                            slotting.massalgorithm_actions WHERE ma_algorithm = 'SKUOPT';");
+                                                            custaudit.massalgorithm_actions WHERE ma_algorithm = 'SKUOPT';");
 $skuoptsql->execute();
 $skuoptsqlstatsarray = $skuoptsql->fetchAll(pdo::FETCH_ASSOC);
 ?>

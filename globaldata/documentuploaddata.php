@@ -29,7 +29,7 @@ switch ($var_numtype) {
 $docsloaded = $conn1->prepare("SELECT 
     *
 FROM
-    slotting.custaudit_uploads
+    custaudit.custaudit_uploads
 WHERE
     upload_custid = '$var_custnum'"
         . " ORDER BY upload_date DESC;");

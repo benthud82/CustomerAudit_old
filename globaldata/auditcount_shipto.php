@@ -6,7 +6,7 @@ $var_shipto = $_POST['shipto'];
 $auditcountsql = $conn1->prepare("SELECT 
                                                                 COUNT(*) as auditcount
                                                             FROM
-                                                                slotting.auditcomplete
+                                                                custaudit.auditcomplete
                                                             WHERE
                                                                 auditcomplete_custtype = 'SHIPTO'
                                                                     AND auditcomplete_custid = '$var_shipto'

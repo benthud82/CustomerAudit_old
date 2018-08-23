@@ -7,14 +7,14 @@ include_once '../connection/connection_details.php';
 $userid = strtoupper($_POST['userid']);
 
 
-$var_sqlmygroups = "SELECT mastergroupings_GROUPID, mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED FROM slotting.scorecard_mastergroupings WHERE UPPER(mastergroupings_TSM) = '$userid' ORDER BY mastergroupings_DATECREATED DESC";
+$var_sqlmygroups = "SELECT mastergroupings_GROUPID, mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED FROM custaudit.scorecard_mastergroupings WHERE UPPER(mastergroupings_TSM) = '$userid' ORDER BY mastergroupings_DATECREATED DESC";
 
 $mygroups = $conn1->prepare("$var_sqlmygroups");
 $mygroups->execute();
 $mygroups_array = $mygroups->fetchAll(pdo::FETCH_ASSOC);
 
 
-$var_sqlothergroups = "SELECT mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED FROM slotting.scorecard_mastergroupings WHERE UPPER(mastergroupings_TSM) <> '$userid' ORDER BY mastergroupings_DATECREATED DESC";
+$var_sqlothergroups = "SELECT mastergroupings_NAME, mastergroupings_DESCRIPTION, mastergroupings_TSM, mastergroupings_DATECREATED FROM custaudit.scorecard_mastergroupings WHERE UPPER(mastergroupings_TSM) <> '$userid' ORDER BY mastergroupings_DATECREATED DESC";
 
 $othergroups = $conn1->prepare("$var_sqlothergroups");
 $othergroups->execute();
@@ -57,13 +57,13 @@ $othergroups_array = $othergroups->fetchAll(pdo::FETCH_ASSOC);
                                                                                 S.SHIPTONUM,
                                                                                 S.SHIPTONAME
                                                                             FROM
-                                                                                slotting.scorecard_groupingdetail
+                                                                                custaudit.scorecard_groupingdetail
                                                                                     JOIN
-                                                                                slotting.salesplan ON SALESPLAN = group_SALESPLAN
+                                                                                custaudit.salesplan ON SALESPLAN = group_SALESPLAN
                                                                                     AND BILLTO = group_BILLTO
                                                                                     AND SHIPTO = group_SHIPTO
                                                                                     JOIN
-                                                                                slotting.customerscores_shipto S ON S.SHIPTONUM = group_SHIPTO
+                                                                                custaudit.customerscores_shipto S ON S.SHIPTONUM = group_SHIPTO
                                                                             WHERE group_MASTERID = $masterid";
 
                                 $mygroupsdetail = $conn1->prepare("$var_sqlmygroupdetail");

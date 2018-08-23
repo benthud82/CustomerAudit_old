@@ -15,15 +15,15 @@ $skuoptsql = $conn1->prepare("SELECT
                                                                 skuopt_monthunits,
                                                                 skuopt_yearunits
                                                             FROM
-                                                                slotting.massalgorithm_skuopt_recs
+                                                                custaudit.massalgorithm_skuopt_recs
                                                                     LEFT JOIN
-                                                                slotting.massalgorithm_actions ON skuopt_whse = ma_whse
+                                                                custaudit.massalgorithm_actions ON skuopt_whse = ma_whse
                                                                     AND skuopt_item = ma_item
                                                             WHERE
                                                                 NOT EXISTS( SELECT 
                                                                         *
                                                                     FROM
-                                                                        slotting.massalgorithm_actions
+                                                                        custaudit.massalgorithm_actions
                                                                     WHERE
                                                                         skuopt_whse = ma_whse
                                                                             AND skuopt_item = ma_item

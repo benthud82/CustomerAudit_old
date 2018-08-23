@@ -27,7 +27,7 @@ ini_set('max_execution_time', 99999);
 set_time_limit(99999);
 
 //find billto/shipto combinations in salesplan table
-$billtoquery = $conn1->prepare("SELECT DISTINCT BILLTO FROM slotting.salesplan WHERE SALESPLAN like '$var_cust';");
+$billtoquery = $conn1->prepare("SELECT DISTINCT BILLTO FROM custaudit.salesplan WHERE SALESPLAN like '$var_cust';");
 $billtoquery->execute();
 $billtocolumns = $billtoquery->fetchAll(pdo::FETCH_COLUMN);
 $billtoinclude = "('" . implode("','", $billtocolumns) . "')";
@@ -76,9 +76,9 @@ switch ($reporttype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     SALESPLAN = '$var_cust'

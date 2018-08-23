@@ -27,9 +27,9 @@ $customerdata = $conn1->prepare("SELECT DISTINCT
                                     B.SLOPE30DAY,
                                     B.SLOPELINES30DAY
                                 FROM
-                                    slotting.customerscores_shipto A
+                                    custaudit.customerscores_shipto A
                                         join
-                                    slotting.scorecard_display_shipto B ON B.BILLTONUM = A.BILLTONUM
+                                    custaudit.scorecard_display_shipto B ON B.BILLTONUM = A.BILLTONUM
                                         and A.SHIPTONUM = B.SHIPTONUM
                                 WHERE
                                     A.BILLTONUM = '$var_billto'

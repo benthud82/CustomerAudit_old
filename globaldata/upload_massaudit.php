@@ -3,18 +3,33 @@
 include '../sessioninclude.php';
 include_once '../connection/connection_details.php';
 $var_userid = strtoupper($_SESSION['MYUSER']);
-$usersql = $conn1->prepare("SELECT  customeraudit_users_GROUP FROM slotting.customeraudit_users WHERE upper(customeraudit_users_ID) =  '$var_userid'");
+$usersql = $conn1->prepare("SELECT  customeraudit_users_GROUP FROM custaudit.customeraudit_users WHERE upper(customeraudit_users_ID) =  '$var_userid'");
 $usersql->execute();
 $userarray = $usersql->fetchAll(pdo::FETCH_ASSOC);
 $usergroup = $userarray[0]['customeraudit_users_GROUP'];
 $now = date("Y-m-d H:i:s");
 $today = date("Y-m-d");
 //error formatting
-$errorprefix = "<div class'uploaderror'>";
-$errorpostfix = "<div>";
+$errorprefix = '<svg class="svg_error" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+  <circle class="path circle" fill="none" stroke="#D06079" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+  <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="34.4" y1="37.9" x2="95.8" y2="92.3"/>
+  <line class="path line" fill="none" stroke="#D06079" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" x1="95.8" y1="38" x2="34.4" y2="92.2"/>
+</svg>
+<p class="svgtext error">';
+$errorpostfix = "<p>";
+
+$successprefix = '<svg class="svg_success" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 130.2 130.2">
+  <circle class="path circle" fill="none" stroke="#73AF55" stroke-width="6" stroke-miterlimit="10" cx="65.1" cy="65.1" r="62.1"/>
+  <polyline class="path check" fill="none" stroke="#73AF55" stroke-width="6" stroke-linecap="round" stroke-miterlimit="10" points="100.2,40.2 51.5,88.8 29.8,67.5 "/>
+</svg>
+<p class="svgtext success">';
+$successpostfix = "<p>";
+
 $clearfile = "<script>document.getElementById('fileToUpload').value = null;</script>";
 $cleargroupid = "<script>document.getElementById('groupid').value = null;</script>";
 
+
+//no group ID
 if (!isset($_POST['groupid']) || $_POST['groupid'] == '' || is_null($_POST['groupid'])) {
     exit($errorprefix . "Please enter a Group ID." . $errorpostfix);
 } else {
@@ -36,7 +51,7 @@ switch ($var_custtype) {
                             CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
                             CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
                         FROM
-                            slotting.scorecard_display_salesplan
+                            custaudit.scorecard_display_salesplan
                         WHERE
                             SALESPLAN = '$var_custid'";
         break;
@@ -52,7 +67,7 @@ switch ($var_custtype) {
                                     CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
                                     CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
                                 FROM
-                                    slotting.scorecard_display_shipto
+                                    custaudit.scorecard_display_shipto
                                 WHERE
                                     SHIPTONUM = '$var_custid'";
         break;
@@ -68,7 +83,7 @@ switch ($var_custtype) {
                                     CAST(SCOREQUARTER * 100 AS UNSIGNED) AS SCOREQUARTER,
                                     CAST(SCOREROLL12 * 100 AS UNSIGNED) AS SCOREROLL12
                                 FROM
-                                    slotting.scorecard_display_billto
+                                    custaudit.scorecard_display_billto
                                 WHERE
                                     BILLTONUM = '$var_custid'";
         break;
@@ -79,7 +94,7 @@ $frsql_exe->execute();
 $fr_array = $frsql_exe->fetchAll(pdo::FETCH_ASSOC);
 //is group ID in the FR table?
 if (count($fr_array) == 0) {
-    exit($errorprefix . $var_custtype." " . $var_custid . " not found." . $errorpostfix);
+    exit($errorprefix . $var_custtype . " " . $var_custid . " not found." . $errorpostfix);
 }
 
 
@@ -102,7 +117,7 @@ if ($imageFileType <> 'xlsx') {
 $docsloaded = $conn1->prepare("SELECT 
     upload_filename
 FROM
-    slotting.custaudit_massaudituploads
+    custaudit.custaudit_massaudituploads
 WHERE
     upload_filename = '$target_basename' and upload_date BETWEEN CURDATE() - INTERVAL 90 DAY AND CURDATE();");
 $docsloaded->execute();
@@ -187,7 +202,7 @@ if ($xlsx = SimpleXLSX::parse("$target_file")) {
     $values = implode(',', $data);
     $columns_assign = 'idcustomeraction_asgntasks, customeraction_asgntasks_ASGNTSM, customeraction_asgntasks_TOTSM, customeraction_asgntasks_DATE, customeraction_asgntasks_GROUP, customeraction_asgntasks_ITEM, customeraction_asgntasks_CUSTGROUP, customeraction_asgntask_GROUPID, customeraction_asgntasks_COMMENT, customeraction_asgntasks_STATUS ';
     if (!empty($values)) {
-        $sql = "INSERT INTO slotting.customeraction_asgntasks ($columns_assign) VALUES $values";
+        $sql = "INSERT INTO custaudit.customeraction_asgntasks ($columns_assign) VALUES $values";
         $query = $conn1->prepare($sql);
         $query->execute();
     }
@@ -209,7 +224,7 @@ if ($xlsx = SimpleXLSX::parse("$target_file")) {
     $values2 = implode(',', $data_auditcomplete);
     $columns_auditcomplete = 'auditcomplete_id, auditcomplete_user, auditcomplete_custtype, auditcomplete_custid, auditcomplete_date, auditcompletecol_FRBEF, auditcomplete_FRAFT, auditcomplete_SHIPACC, auditcomplete_DMG, auditcomplete_SCDESC, auditcomplete_OSC, auditcomplete_SCOREMNT, auditcomplete_SCOREQTR, auditcomplete_SCORER12, auditcomplete_COMMENT, auditcomplete_USERGROUP';
     if (!empty($values2)) {
-        $sql2 = "INSERT INTO slotting.auditcomplete ($columns_auditcomplete) VALUES $values2";
+        $sql2 = "INSERT INTO custaudit.auditcomplete ($columns_auditcomplete) VALUES $values2";
         $query2 = $conn1->prepare($sql2);
         $query2->execute();
     }
@@ -219,9 +234,12 @@ if ($xlsx = SimpleXLSX::parse("$target_file")) {
 
 //insert upload data to table custaudit_massaudituploads
 $columns = 'upload_custid, upload_custtype, upload_filename, upload_filetype, upload_date, upload_tsm';
-$sql = "INSERT INTO slotting.custaudit_massaudituploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
+$sql = "INSERT INTO custaudit.custaudit_massaudituploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
 $query = $conn1->prepare($sql);
 $query->execute();
 
 //clear the group id and file ids
 echo $cleargroupid . $clearfile;
+
+//success
+echo $successprefix . 'You have successfully audited ' . $var_custtype . ' ' . $var_custid;

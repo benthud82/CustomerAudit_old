@@ -9,7 +9,7 @@ $var_userid = ($_POST['userid']);
 $groupid = $conn1->prepare("SELECT 
                                     customeraudit_users_GROUP as USERGROUP
                                 FROM
-                                    slotting.customeraudit_users
+                                    custaudit.customeraudit_users
                                 WHERE
                                     customeraudit_users_ID = '$var_userid';");
 $groupid->execute();
@@ -35,7 +35,7 @@ $columns = 'auditcomplete_id, auditcomplete_user, auditcomplete_custtype, auditc
 $values = "0, '$var_userid', '$var_custtype', '$var_custalphanum', '$datetime', '$var_fillratebefore_month', '$var_fillrateafter_month', '$var_shipacc_month', '$var_dmgacc_month', '$var_addscacc_month', '$var_osc_month', $var_score_month, $var_score_quarter, $var_score_r12, '$var_comment', '$var_usergroup'";
 
 
-$sql = "INSERT INTO slotting.auditcomplete ($columns) VALUES ($values)";
+$sql = "INSERT INTO custaudit.auditcomplete ($columns) VALUES ($values)";
 $query = $conn1->prepare($sql);
 $query->execute();
 

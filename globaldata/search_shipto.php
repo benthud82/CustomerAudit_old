@@ -10,11 +10,11 @@ $shiptosearch = $conn1->prepare("SELECT DISTINCT
                                                                 B.TOTR12LINES,
                                                                 B.TOTR12SALES
                                                             FROM
-                                                                slotting.customerscores_billto A
+                                                                custaudit.customerscores_billto A
                                                                     JOIN
-                                                                slotting.customerscores_shipto B ON A.BILLTONUM = B.BILLTONUM
+                                                                custaudit.customerscores_shipto B ON A.BILLTONUM = B.BILLTONUM
                                                             WHERE
-                                                                UPPER(B.SHIPTONAME) LIKE ('%$uppersearchterm%')
+                                                                (UPPER(B.SHIPTONAME) LIKE ('%$uppersearchterm%') or SHIPTONUM LIKE ('%$uppersearchterm%'))
                                                             ORDER BY B.TOTR12LINES DESC;");
 $shiptosearch->execute();
 $shiptosearcharray = $shiptosearch->fetchAll(pdo::FETCH_ASSOC);

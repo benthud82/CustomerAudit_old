@@ -17,9 +17,9 @@ switch ($groupsel) {
                                             CAST(SCOREMONTH_EXCLDS * 100 AS UNSIGNED) AS CURSCORE,
                                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) AS SCOREDIFF
                                         FROM
-                                            slotting.auditcomplete
+                                            custaudit.auditcomplete
                                                 LEFT JOIN
-                                            slotting.scorecard_display_salesplan ON SALESPLAN = auditcomplete_custid
+                                            custaudit.scorecard_display_salesplan ON SALESPLAN = auditcomplete_custid
                                         WHERE
                                             auditcomplete_custid = '$groupid'
                                             AND auditcomplete_custtype = 'SALESPLAN'
@@ -33,7 +33,7 @@ switch ($groupsel) {
                                         customeraction_asgntasks_COMMENT,
                                         customeraction_asgntasks_STATUS
                                     FROM
-                                        slotting.customeraction_asgntasks
+                                        custaudit.customeraction_asgntasks
                                     WHERE
                                         customeraction_asgntasks_CUSTGROUP = 'SALESPLAN'
                                             AND customeraction_asgntask_GROUPID = '$groupid';";
@@ -48,9 +48,9 @@ switch ($groupsel) {
                                         CAST(SCOREMONTH_EXCLDS * 100 AS UNSIGNED) AS CURSCORE,
                                         ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) AS SCOREDIFF
                                     FROM
-                                        slotting.auditcomplete
+                                        custaudit.auditcomplete
                                             LEFT JOIN
-                                        slotting.scorecard_display_billto ON BILLTONUM = auditcomplete_custid
+                                        custaudit.scorecard_display_billto ON BILLTONUM = auditcomplete_custid
                                     WHERE
                                         auditcomplete_custid = '$groupid'
                                             AND auditcomplete_custtype = 'BILLTO'
@@ -65,7 +65,7 @@ switch ($groupsel) {
                                         customeraction_asgntasks_COMMENT,
                                         customeraction_asgntasks_STATUS
                                     FROM
-                                        slotting.customeraction_asgntasks
+                                        custaudit.customeraction_asgntasks
                                     WHERE
                                         customeraction_asgntasks_CUSTGROUP = 'BILLTO'
                                             AND customeraction_asgntask_GROUPID = '$groupid';";
@@ -81,9 +81,9 @@ switch ($groupsel) {
                                             CAST(SCOREMONTH_EXCLDS * 100 AS UNSIGNED) AS CURSCORE,
                                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) AS SCOREDIFF
                                         FROM
-                                            slotting.auditcomplete
+                                            custaudit.auditcomplete
                                                 LEFT JOIN
-                                            slotting.scorecard_display_shipto ON SHIPTONUM = auditcomplete_custid
+                                            custaudit.scorecard_display_shipto ON SHIPTONUM = auditcomplete_custid
                                         WHERE
                                             auditcomplete_custid = '$groupid'
                                                 AND auditcomplete_custtype = 'SHIPTO'
@@ -98,7 +98,7 @@ switch ($groupsel) {
                                         customeraction_asgntasks_COMMENT,
                                         customeraction_asgntasks_STATUS
                                     FROM
-                                        slotting.customeraction_asgntasks
+                                        custaudit.customeraction_asgntasks
                                     WHERE
                                         customeraction_asgntasks_CUSTGROUP = 'SHIPTO'
                                             AND customeraction_asgntask_GROUPID = '$groupid';";

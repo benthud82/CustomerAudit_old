@@ -23,7 +23,7 @@ if (count($usersetarray) == 0) {  //the user is not logged in redirect to regist
     date_default_timezone_set('America/New_York');
     $datetime = date('Y-m-d H:i:s');
     $usertsm = $_SESSION['MYUSER'];
-    $result1 = $conn1->prepare("INSERT INTO slotting.customerauditlogin (idcustomerauditlogin, customeraudit_TSM, customeraudit_datetime) values (0,'$usertsm','$datetime')");
+    $result1 = $conn1->prepare("INSERT INTO custaudit.customerauditlogin (idcustomerauditlogin, customeraudit_TSM, customeraudit_datetime) values (0,'$usertsm','$datetime')");
     $result1->execute();
 
     header('Location: dashboard.php');

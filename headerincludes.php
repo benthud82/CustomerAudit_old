@@ -1,6 +1,7 @@
 <meta charset="utf-8">
 
 <script src="js/offsys_dash.js" type="text/javascript"></script>
+<script src="js/globalscripts.js" type="text/javascript"></script>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
@@ -21,3 +22,5 @@
 <link href="../BootstrapXL.css" rel="stylesheet" type="text/css"/>
 
 <script src="../jquery-ui.js"></script>
+
+<link rel="stylesheet" type="text/css" href="osscss/print.css" media="print">

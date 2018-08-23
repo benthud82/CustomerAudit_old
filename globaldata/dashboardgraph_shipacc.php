@@ -10,7 +10,7 @@ $result1 = $conn1->prepare("SELECT
                                                         shipacc_summ_date AS shipaccdate,
                                                         SUM(shipacc_summ_count) AS shipacccount
                                                     FROM
-                                                        slotting.massalgorithm_shipacc_summary
+                                                        custaudit.massalgorithm_shipacc_summary
                                                     GROUP BY shipacc_summ_date");
 $result1->execute();
 

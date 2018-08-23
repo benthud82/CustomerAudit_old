@@ -7,7 +7,7 @@ session_write_close();
 $shipaccsql = $conn1->prepare("SELECT 
                                                             COUNT(*) as skucount, SUM(ma_action) as added
                                                         FROM
-                                                            slotting.massalgorithm_actions WHERE ma_algorithm = 'SHIPACC';");
+                                                            custaudit.massalgorithm_actions WHERE ma_algorithm = 'SHIPACC';");
 $shipaccsql->execute();
 $shipaccsqlarray = $shipaccsql->fetchAll(pdo::FETCH_ASSOC);
 ?>

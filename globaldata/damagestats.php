@@ -7,7 +7,7 @@ session_write_close();
 $damagesql = $conn1->prepare("SELECT 
                                                             COUNT(*) as skucount, SUM(ma_action) as added
                                                         FROM
-                                                            slotting.massalgorithm_actions WHERE ma_algorithm = 'DAMAGE';");
+                                                            custaudit.massalgorithm_actions WHERE ma_algorithm = 'DAMAGE';");
 $damagesql->execute();
 $damagesqlarray = $damagesql->fetchAll(pdo::FETCH_ASSOC);
 ?>

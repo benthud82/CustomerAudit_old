@@ -47,6 +47,6 @@ if ($uploadOk == 0) {
     }
 }
 
-$sql = "INSERT INTO slotting.custaudit_uploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
+$sql = "INSERT INTO custaudit.custaudit_uploads ($columns) VALUES ('$var_custid', '$var_custtype', '$target_basename', '$imageFileType', '$today', '$var_userid');";
 $query = $conn1->prepare($sql);
 $query->execute();

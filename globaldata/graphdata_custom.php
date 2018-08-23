@@ -30,7 +30,7 @@ set_time_limit(99999);
 $billtoquery = $conn1->prepare("SELECT 
                                                                         group_SHIPTO
                                                                     FROM
-                                                                        slotting.scorecard_groupingdetail
+                                                                        custaudit.scorecard_groupingdetail
                                                                     WHERE
                                                                         group_MASTERID = $var_cust;");
 $billtoquery->execute();
@@ -81,9 +81,9 @@ switch ($reporttype) {
                                                                         ELSE 0
                                                                     END) AS SUM_DAMAGE
                                                                 FROM
-                                                                    slotting.custreturns
+                                                                    custaudit.custreturns
                                                                         JOIN
-                                                                    slotting.salesplan ON BILLTO = BILLTONUM
+                                                                    custaudit.salesplan ON BILLTO = BILLTONUM
                                                                         AND SHIPTO = SHIPTONUM
                                                                 WHERE
                                                                     SALESPLAN = '$var_cust'

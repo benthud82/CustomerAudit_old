@@ -19,15 +19,15 @@ $damagesql = $conn1->prepare("SELECT
                                                                     damage_acc365day,
                                                                     damage_365day
                                                                 FROM
-                                                                    slotting.massalgorithm_damage_recs
+                                                                    custaudit.massalgorithm_damage_recs
                                                                         LEFT JOIN
-                                                                    slotting.massalgorithm_actions ON damage_whse = ma_whse
+                                                                    custaudit.massalgorithm_actions ON damage_whse = ma_whse
                                                                         AND damage_item = ma_item
                                                                 WHERE
                                                                     NOT EXISTS( SELECT 
                                                                             *
                                                                         FROM
-                                                                            slotting.massalgorithm_actions
+                                                                            custaudit.massalgorithm_actions
                                                                         WHERE
                                                                             damage_whse = ma_whse
                                                                                 AND damage_item = ma_item

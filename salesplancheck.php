@@ -7,24 +7,28 @@
 
         <title>Sales Plan Check</title>
         <?php include_once 'headerincludes.php'; ?>
+        <?php include_once 'globaldata/modal_loading.php'; ?>
         <link href="../jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="osscss/print.css" media="print">
         <style>
             .table>tbody>tr>td {white-space: nowrap}
             .fa{padding-left: 1px;}
         </style>
     </head>
 
-    <body style="">
+    <body>
         <!--include horz nav php file-->
-        <?php include_once 'horizontalnav.php'; ?>
+        <?php
+        include_once 'horizontalnav.php';
+        ?>
         <!--include vert nav php file-->
         <?php include_once 'verticalnav.php'; ?>
 
         <section id="content"> 
-            <section class="main padder"> 
+            <section class=" main padder"> 
 
                 <!--Enter salesplan # and submit-->
-                <div class="row" style="padding-bottom: 25px; padding-top: 20px;"> 
+                <div class="row no-print " style="padding-bottom: 25px; padding-top: 20px;"> 
                     <div class="col-lg-3">
                         <div class="pull-left" style="margin-left: 15px" >
                             <label>Sales Plan:</label>
@@ -34,6 +38,10 @@
                     <div class="col-lg-2">
                         <div class="pull-left" style="margin-left: 15px" >
                             <button id="loaddata" type="button" class="btn btn-primary" onclick="gettable();" style="margin-bottom: 5px;">Load Data</button>
+                            <div class="btn-group">
+                                <button id="printdata" type="button" class="btn btn-inverse hidden" onclick="printdata();" style="margin-bottom: 5px; margin-left: 10px;">Print Data</button>
+                                <!--<button id="printdata" type="button" class="btn btn-inverse" onclick="printdata();" style="margin-bottom: 5px;">?</button>-->
+                            </div>
                         </div>
                     </div>
 
@@ -52,9 +60,9 @@
                 </div>
 
 
-                <div id="markcompletecontainer"></div>
-                <div id="customernameinfo" class="hidden"></div>
-                <div id="documentupload" class="hidden"></div>
+                <div class="no-print" id="markcompletecontainer"></div>
+                <div class="section-to-print" id="customernameinfo" class="hidden"></div>
+                <div class="no-print" id="documentupload" class="hidden"></div>
 
                 <!--Scorecard summary data by month/qtr/r12-->
                 <div class="hidewrapper">
@@ -62,7 +70,7 @@
                         <header class="panel-heading bg bg-inverse h2">Scorecard Data<i class="fa fa-close pull-right closehidden" style="cursor: pointer;" id="closesummary"></i><i class="fa fa-chevron-up pull-right clicktotoggle-chevron" style="cursor: pointer;"></i></header>
                         <div id="salesplansummary" class="panel-body" style="background: #efefef">
                             <!--populate from ajax call in getcustomerdata function-->
-                            <div class="customersummary" id="customersummary"></div>
+                            <div class="section-to-print customersummary" id="customersummary"></div>
                         </div>
                     </section>
                 </div>
@@ -153,7 +161,7 @@
                                             <div class="alert alert-info"><h5><i class='fa fa-info-circle fa-lg'></i> Defaults to previous <strong>30</strong> calendar days unless start date changed. </h5></div>
                                         </div>
                                     </div>
-                                    <div id="fillratetablecontainer" class="">
+                                    <div id="fillratetablecontainer" class="section-to-print">
                                         <table id="fillratetable" class="table table-bordered" cellspacing="0" style="font-size: 11px; font-family: Calibri; cursor: pointer;">
                                             <thead>
                                                 <tr>
@@ -303,8 +311,8 @@
 
 
                             <div id="chartpage"  class="page-break" style="width: 100%">
-                                <div id="charts padded">
-                                    <div id="container" class="largecustchartstyle printrotate"></div>
+                                <div class="printrotate " id="charts padded">
+                                    <div id="frcontainer" class="largecustchartstyle "></div>
                                 </div>
                             </div>
                         </div>
@@ -320,7 +328,7 @@
 
                             <div id="chartpage_custret"  class="page-break" style="width: 100%">
                                 <div id="charts_custret padded">
-                                    <div id="container_custret" class="largecustchartstyle printrotate"></div>
+                                    <div id="container_custret" class="largecustchartstyle"></div>
                                 </div>
                             </div>
                         </div>
@@ -514,7 +522,6 @@
 //            }
             });
 
-
             $(document).on("click", "#upload_submit", function (event) {
                 event.preventDefault();
                 var file = $('#fileToUpload').get(0).files[0];
@@ -542,9 +549,8 @@
                 });
             });
 
-
-
             function gettable() {
+                $('#printdata').addClass('hidden');
                 var startdate = $('#startfiscal_frimpacts').val();
                 var enddate = $('#endfiscal_frimpacts').val();
                 var salesplan = $('#salesplan').val();
@@ -739,176 +745,12 @@
                         'excelHtml5'
                     ]
                 });
-                //options for fillrate highchart
-                var options = {
-                    chart: {
-                        marginTop: 50,
-                        marginBottom: 115,
-                        renderTo: 'container',
-                        type: 'spline'
-                    }, credits: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                verticalAlign: 'top',
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function () {
-                                    return Highcharts.numberFormat(this.y, 2) + ' %';
-                                }
-                            },
-                            point: {
-                                events: {
-                                    click: function () {
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    title: {
-                        text: ' '
-                    },
-                    xAxis: {
-                        categories: [], labels: {
-                            rotation: -90,
-                            y: 25,
-                            align: 'right',
-                            step: 1,
-                            style: {
-                                fontSize: '12px',
-                                fontFamily: 'Verdana, sans-serif'
-                            }
-                        },
-                        legend: {
-                            y: "10",
-                            x: "5"
-                        }
-
-                    },
-                    yAxis: {
-                        max: 100,
-                        title: {
-                            text: 'Fill Rate Percentage'
-                        },
-                        plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }],
-                        opposite: true
-                    }, tooltip: {
-                        formatter: function () {
-                            return '<b>' + this.series.name + '</b><br/>' +
-                                    this.x + ': ' + Highcharts.numberFormat(this.y, 2) + ' %';
-                        }
-                    },
-                    series: []
-                };
-                $.ajax({
-                    url: 'globaldata/graphdata_' + numtype + '.php',
-                    data: {"salesplan": salesplan},
-                    type: 'GET',
-                    dataType: 'json',
-                    async: 'true',
-                    success: function (json) {
-                        options.xAxis.categories = json[0]['data'];
-                        options.series[0] = json[1];
-                        options.series[1] = json[2];
-                        chart = new Highcharts.Chart(options);
-                        series = chart.series;
-                    }
-                });
-
-                //options for custreturns highchart
-                var options2 = {
-                    chart: {
-                        marginTop: 50,
-                        marginBottom: 115,
-                        renderTo: 'container_custret',
-                        type: 'spline'
-                    }, credits: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                verticalAlign: 'top',
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function () {
-                                    return Highcharts.numberFormat(this.y, 2) + ' %';
-                                }
-                            },
-                            point: {
-                                events: {
-                                    click: function () {
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    title: {
-                        text: ' '
-                    },
-                    xAxis: {
-                        categories: [], labels: {
-                            rotation: -90,
-                            y: 25,
-                            align: 'right',
-                            step: 1,
-                            style: {
-                                fontSize: '12px',
-                                fontFamily: 'Verdana, sans-serif'
-                            }
-                        },
-                        legend: {
-                            y: "10",
-                            x: "5"
-                        }
-
-                    },
-                    yAxis: {
-                        max: 100,
-                        title: {
-                            text: 'Customer Returns Percentage'
-                        },
-                        plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }],
-                        opposite: true
-                    }, tooltip: {
-                        formatter: function () {
-                            return '<b>' + this.series.name + '</b><br/>' +
-                                    this.x + ': ' + Highcharts.numberFormat(this.y, 2) + ' %';
-                        }
-                    },
-                    series: []
-                };
-                $.ajax({
-                    url: 'globaldata/graphdata_custreturns.php',
-                    data: {"salesplan": salesplan, "custtype": 'salesplan'},
-                    type: 'GET',
-                    dataType: 'json',
-                    async: 'true',
-                    success: function (json) {
-                        options2.xAxis.categories = json[0]['data'];
-                        options2.series[0] = json[1];
-                        options2.series[1] = json[2];
-                        options2.series[2] = json[3];
-                        chart = new Highcharts.Chart(options2);
-                        series = chart.series;
-                    }
-                });
+                //call function to load fill rate highchart in js/globalscripts.js
+                loadfillratehighchart_salesplan(numtype, salesplan);
+                //call function to load cust returns highchart js/globalscripts.js
+                loadcustreturnsratehighchart_salesplan(numtype, salesplan);
                 loaduploadmodule();
-
+                $('#printdata').removeClass('hidden');
             }
 
             function loaduploadmodule() {
@@ -922,6 +764,31 @@
                     dataType: 'html',
                     success: function (ajaxresult) {
                         $("#documentupload").html(ajaxresult);
+                    }
+                });
+            }
+
+            function printdata() {
+                $('#modal_loading').modal('toggle');
+                var salesplan = $('#salesplan').val();
+                var numtype = 'salesplan';
+                //ajax for print audit
+                $.ajax({
+                    url: 'auditprint.php',
+                    data: {salesplan: salesplan, numtype: numtype}, //pass salesplan, billto, shipto all through billto
+                    type: 'POST',
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#modal_loading').modal('toggle');
+                        var newWin = window.open();
+                        newWin.document.write(data);
+                        newWin.document.close();
+                        setTimeout(function () {
+                            newWin.focus();
+                        }, 1000);
+                        setTimeout(function () {
+                            newWin.print();
+                        }, 3000);
                     }
                 });
             }
@@ -1082,7 +949,7 @@
 
             $("body").tooltip({selector: '[data-toggle="tooltip"]'});
             $(document).ready(function () {
-                debugger;
+
                 if (window.location.href.indexOf("salesplan=") > -1) {
 
                     //Place this in the document ready function to determine if there is search variables in the URL.  

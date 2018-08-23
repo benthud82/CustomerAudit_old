@@ -15,9 +15,9 @@ switch ($groupid) {
                                                                 trim(S.SHIPTONUM) as SHIPTONUM,
                                                                 trim(S.SHIPTONAME) as SHIPTONAME
                                                             FROM
-                                                                slotting.salesplan P
+                                                                custaudit.salesplan P
                                                                     JOIN
-                                                                slotting.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
+                                                                custaudit.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
                                                             WHERE SALESPLAN = '$loaddata_searchterm'");
         break;
 
@@ -30,9 +30,9 @@ switch ($groupid) {
                                                                 trim(S.SHIPTONUM) as SHIPTONUM,
                                                                 trim(S.SHIPTONAME) as SHIPTONAME
                                                             FROM
-                                                                slotting.salesplan P
+                                                                custaudit.salesplan P
                                                                     JOIN
-                                                                slotting.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
+                                                                custaudit.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
                                                             WHERE BILLTO = '$loaddata_searchterm'");
         break;
 
@@ -45,9 +45,9 @@ switch ($groupid) {
                                                                 trim(S.SHIPTONUM) as SHIPTONUM,
                                                                 trim(S.SHIPTONAME) as SHIPTONAME
                                                             FROM
-                                                                slotting.salesplan P
+                                                                custaudit.salesplan P
                                                                     JOIN
-                                                                slotting.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
+                                                                custaudit.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
                                                             WHERE SHIPTO = '$loaddata_searchterm'");
         break;
 
@@ -60,9 +60,9 @@ switch ($groupid) {
                                                                 trim(S.SHIPTONUM) as SHIPTONUM,
                                                                 trim(S.SHIPTONAME) as SHIPTONAME
                                                             FROM
-                                                                slotting.salesplan P
+                                                                custaudit.salesplan P
                                                                     JOIN
-                                                                slotting.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
+                                                                custaudit.customerscores_shipto S ON P.BILLTO = S.BILLTONUM and P.SHIPTO = S.SHIPTONUM
                                                             WHERE SALESPLAN like '%$loaddata_searchterm%' or SALESPLAN_DESC  like '%$loaddata_searchterm%' or BILLTONUM  like '%$loaddata_searchterm%'  or BILLTONAME  like '%$loaddata_searchterm%'  or SHIPTONUM  like '%$loaddata_searchterm%'  or SHIPTONAME  like '%$loaddata_searchterm%'  ");
         break;
 
@@ -81,7 +81,7 @@ $count_loaddataarray = count($loaddataarray);
 $customgroupsql = $conn1->prepare("SELECT DISTINCT
                                                                         mastergroupings_NAME
                                                                     FROM
-                                                                        slotting.scorecard_mastergroupings
+                                                                        custaudit.scorecard_mastergroupings
                                                                     WHERE
                                                                         UPPER(mastergroupings_TSM) = '$var_userid' ORDER BY mastergroupings_NAME asc;");
 $customgroupsql->execute();

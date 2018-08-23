@@ -14,7 +14,7 @@ $comptasks = $conn1->prepare("SELECT idcustomeraction_comptasks,
                                    customeraction_comptasks_GROUPID, 
                                    customeraction_comptasks_ITEM, 
                                    customeraction_comptasks_COMMENT
-                            FROM slotting.customeraction_comptasks 
+                            FROM custaudit.customeraction_comptasks 
                             WHERE UPPER(customeraction_comptasks_TOTSM) = '$var_userid'
                             ORDER BY customeraction_comptasks_COMPDATE desc;");
 $comptasks->execute();

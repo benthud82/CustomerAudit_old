@@ -9,7 +9,7 @@ $var_userid = strtoupper($_POST['userid']);
 
 //find group
 $mygroup = $conn1->prepare("SELECT customeraudit_users_GROUP
-                            FROM slotting.customeraudit_users
+                            FROM custaudit.customeraudit_users
                             WHERE UPPER(customeraudit_users_ID = '$var_userid')");
 $mygroup->execute();
 $mygrouparray = $mygroup->fetchAll(pdo::FETCH_ASSOC);
@@ -27,9 +27,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SALESPLAN'
                                 and UPPER(auditcomplete_user) = '$var_userid'
@@ -45,9 +45,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'BILLTO'
                                 and UPPER(auditcomplete_user) = '$var_userid'
@@ -63,9 +63,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SHIPTO'
                                 and UPPER(auditcomplete_user) = '$var_userid'
@@ -81,9 +81,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SALESPLAN'
                                 and UPPER(auditcomplete_USERGROUP) =  '$mygroupdata'
@@ -99,9 +99,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'BILLTO'
                                 and UPPER(auditcomplete_USERGROUP) =  '$mygroupdata'
@@ -117,9 +117,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SHIPTO'
                                 and UPPER(auditcomplete_USERGROUP) =  '$mygroupdata'
@@ -135,9 +135,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_salesplan ON SALESPLAN = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SALESPLAN'
                                 and auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -152,9 +152,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_billto ON BILLTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'BILLTO'
                                 and auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)
@@ -169,9 +169,9 @@ switch ($var_clickedid) {
                             cast(SCOREMONTH_EXCLDS * 100 as UNSIGNED) as CURSCORE,
                             ((SCOREMONTH_EXCLDS * 100) - auditcomplete_SCOREMNT) as SCOREDIFF
                         FROM
-                            slotting.auditcomplete
+                            custaudit.auditcomplete
                                 LEFT JOIN
-                            slotting.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
+                            custaudit.scorecard_display_shipto ON SHIPTONUM = UPPER(auditcomplete_custid)
                         WHERE
                             auditcomplete_custtype = 'SHIPTO'
                                 and auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 30 DAY)

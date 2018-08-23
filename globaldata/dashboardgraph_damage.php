@@ -11,7 +11,7 @@ $result1 = $conn1->prepare("SELECT
                                                         damage_summ_date AS damagedate,
                                                         SUM(damage_summ_count) AS damagecount
                                                     FROM
-                                                        slotting.massalgorithm_damage_summary
+                                                        custaudit.massalgorithm_damage_summary
                                                     GROUP BY damage_summ_date");
 $result1->execute();
 

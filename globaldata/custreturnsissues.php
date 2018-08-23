@@ -52,7 +52,7 @@ if (isset($_GET['salesplan'])) {
     $sql_cfr_incl = "SELECT 
                                     group_SHIPTO
                                 FROM
-                                    slotting.scorecard_groupingdetail
+                                    custaudit.scorecard_groupingdetail
                                 WHERE
                                     group_MASTERID = $var_salesplan;";
     $query_cfr_incl = $conn1->prepare($sql_cfr_incl);
@@ -164,12 +164,12 @@ $custreturnsdata = $conn1->prepare("SELECT
                                     count(*) as TOTALRETURNS,
                                     ' ' as RECENTAUDIT
                                     FROM
-                                        slotting.custreturns R
+                                        custaudit.custreturns R
                                             JOIN
-                                        slotting.salesplan S ON R.BILLTONUM = S.BILLTO
+                                        custaudit.salesplan S ON R.BILLTONUM = S.BILLTO
                                             and R.SHIPTONUM = S.SHIPTO
                                             JOIN
-                                        slotting.custreturnmetrics M ON R.RETURNCODE = M.RETURNCODE
+                                        custaudit.custreturnmetrics M ON R.RETURNCODE = M.RETURNCODE
                                     WHERE 
                                       ORD_RETURNDATE BETWEEN DATE_SUB(NOW(), INTERVAL $days DAY) AND NOW() $salesplanfilter $itemcodefilter
                                     GROUP BY ITEMCODE
@@ -183,9 +183,9 @@ $custreturnsarray = $custreturnsdata->fetchAll(pdo::FETCH_ASSOC);
 $recentaudit = $conn1->prepare("SELECT 
                                     *
                                 FROM
-                                    slotting.customeraction_asgntasks
+                                    custaudit.customeraction_asgntasks
                                         LEFT JOIN
-                                    slotting.customeraction_comptasks ON customeraction_comptasks_ASGNTSM = customeraction_asgntasks_ASGNTSM
+                                    custaudit.customeraction_comptasks ON customeraction_comptasks_ASGNTSM = customeraction_asgntasks_ASGNTSM
                                         and customeraction_asgntasks_DATE = customeraction_comptasks_ASGNDATE
                                 WHERE
                                     customeraction_asgntasks_DATE >= DATE_SUB(NOW(), INTERVAL 30 DAY) ;");

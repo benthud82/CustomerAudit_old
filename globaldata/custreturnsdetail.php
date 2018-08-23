@@ -26,7 +26,7 @@ if (isset($_GET['salesplan'])) {
     $sql_cfr_incl = "SELECT 
                                     group_SHIPTO
                                 FROM
-                                    slotting.scorecard_groupingdetail
+                                    custaudit.scorecard_groupingdetail
                                 WHERE
                                     group_MASTERID = $var_salesplan;";
     $query_cfr_incl = $conn1->prepare($sql_cfr_incl);
@@ -77,12 +77,12 @@ $custreturnsdetaildata = $conn1->prepare("SELECT ' ',
                                         METRIC,
                                         DESCRIPTION
                                     FROM
-                                        slotting.custreturns R
+                                        custaudit.custreturns R
                                             JOIN
-                                        slotting.salesplan S ON R.BILLTONUM = S.BILLTO
+                                        custaudit.salesplan S ON R.BILLTONUM = S.BILLTO
                                             and R.SHIPTONUM = S.SHIPTO
                                             JOIN
-                                        slotting.custreturnmetrics M ON R.RETURNCODE = M.RETURNCODE
+                                        custaudit.custreturnmetrics M ON R.RETURNCODE = M.RETURNCODE
                                     WHERE ORD_RETURNDATE BETWEEN DATE_SUB(NOW(), INTERVAL $days DAY) AND NOW() $salesplanfilter $itemcodefilter;");
 $custreturnsdetaildata->execute();
 $custreturnsdetailarray = $custreturnsdetaildata->fetchAll(pdo::FETCH_ASSOC);

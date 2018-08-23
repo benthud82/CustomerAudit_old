@@ -7,7 +7,7 @@ $mygroupdata = 'IM';
 
 
 
-$users = $conn1->prepare("SELECT * FROM slotting.customeraudit_users WHERE customeraudit_users_GROUP = '$mygroupdata' ORDER BY customeraudit_users_ID ASC;;");
+$users = $conn1->prepare("SELECT * FROM custaudit.customeraudit_users WHERE customeraudit_users_GROUP = '$mygroupdata' ORDER BY customeraudit_users_ID ASC;;");
 $users->execute();
 $usersarray = $users->fetchAll(pdo::FETCH_ASSOC);
 ?>

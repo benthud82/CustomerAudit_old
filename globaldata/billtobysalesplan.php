@@ -27,10 +27,10 @@ $customerdata = $conn1->prepare("SELECT DISTINCT
                                     B.SLOPE30DAY,
                                     B.SLOPELINES30DAY
                                 FROM
-                                    slotting.customerscores_billto A
+                                    custaudit.customerscores_billto A
                                         join
-                                    slotting.scorecard_display_billto B ON B.BILLTONUM = A.BILLTONUM
-                                        join slotting.salesplan C on C.BILLTO = A.BILLTONUM
+                                    custaudit.scorecard_display_billto B ON B.BILLTONUM = A.BILLTONUM
+                                        join custaudit.salesplan C on C.BILLTO = A.BILLTONUM
                                 WHERE C.SALESPLAN = '$var_salesplan'
                                 ORDER BY A.TOTMONTHSALES DESC");
 $customerdata->execute();

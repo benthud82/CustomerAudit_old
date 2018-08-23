@@ -6,7 +6,7 @@ $var_salesplan = $_POST['salesplan'];
 $auditcountsql = $conn1->prepare("SELECT 
                                                                 COUNT(*) as auditcount
                                                             FROM
-                                                                slotting.auditcomplete
+                                                                custaudit.auditcomplete
                                                             WHERE
                                                                 auditcomplete_custtype = 'SALESPLAN'
                                                                     AND auditcomplete_custid = '$var_salesplan'

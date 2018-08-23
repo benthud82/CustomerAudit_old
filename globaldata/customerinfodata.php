@@ -1,20 +1,25 @@
 <?php
+if(file_exists('../connection/connection_details.php')){
 include_once '../connection/connection_details.php';
+}else{
+    include_once 'connection/connection_details.php';
+}
+   
 $var_numtype = $_POST['numtype'];
 //$var_custnum = $_POST['customnumber'];
 
 switch ($var_numtype) {
     case 'salesplan':
         $var_custnum = $_POST['salesplan'];
-        $sql = "SELECT DISTINCT SALESPLAN_DESC, ABAC08, ABAC10, ABAC04 FROM slotting.salesplan WHERE SALESPLAN = '$var_custnum'";
+        $sql = "SELECT DISTINCT SALESPLAN_DESC, ABAC08, ABAC10, ABAC04 FROM custaudit.salesplan WHERE SALESPLAN = '$var_custnum'";
         break;
     case 'billto':
         $var_custnum = intval($_POST['billto']);
         $sql = "SELECT DISTINCT
                             BILLTONAME as SALESPLAN_DESC, ABAC08, ABAC10, ABAC04
                         FROM
-                            slotting.salesplan
-                            JOIN slotting.customerscores_billto on BILLTONUM = BILLTO
+                            custaudit.salesplan
+                            JOIN custaudit.customerscores_billto on BILLTONUM = BILLTO
                         WHERE
                             BILLTONUM = $var_custnum";
         break;
@@ -23,8 +28,8 @@ switch ($var_numtype) {
         $sql = "SELECT DISTINCT
                         SHIPTONAME as SALESPLAN_DESC, ABAC08, ABAC10, ABAC04
                     FROM
-                        slotting.salesplan
-                        JOIN slotting.customerscores_shipto on SHIPTONUM = SHIPTO
+                        custaudit.salesplan
+                        JOIN custaudit.customerscores_shipto on SHIPTONUM = SHIPTO
                     WHERE
                         SHIPTONUM = $var_custnum";
         break;
@@ -35,7 +40,7 @@ switch ($var_numtype) {
         $sql2 = "SELECT 
                             mastergroupings_DESCRIPTION
                         FROM
-                            slotting.scorecard_mastergroupings
+                            custaudit.scorecard_mastergroupings
                         WHERE
                             mastergroupings_GROUPID = $var_custnum;";
         $custinfo2 = $conn1->prepare("$sql2");
@@ -61,7 +66,8 @@ if ($keycount == 0) {
     $custinfoarray[0]['ABAC08'] = 'N/A';
 }
 
-echo '<h3>' . $custinfoarray[0]['SALESPLAN_DESC'] . '</h3>';
+echo "<h3 class='printheading'>" . $var_custnum . ' - ' . $custinfoarray[0]['SALESPLAN_DESC'] . '</h3>';
+
 echo '<h5>Associated Market Segments: ';
 foreach ($custinfoarray as $key => $value) {
     if ($key == 0) {
@@ -77,12 +83,13 @@ foreach ($custinfoarray as $key => $value) {
     if ($key == 0) {
         echo $custinfoarray[$key]['ABAC10'];
     } elseif ($custinfoarray[$key - 1]['ABAC10'] !== $custinfoarray[$key]['ABAC10']) {
+        echo ' | ';
         echo $custinfoarray[$key]['ABAC10'];
     }
 }
 echo '</h5>';
 
-echo '<h5>Associated Practice Types: ';
+echo "<h5 style='page-break-after:always;'>Associated Practice Types: ";
 foreach ($custinfoarray as $key => $value) {
     if ($key == 0) {
         echo $custinfoarray[$key]['ABAC04'];

@@ -19,15 +19,15 @@ $shipaccsql = $conn1->prepare("SELECT
                                                                 shipacc_acc365day,
                                                                 shipacc_365day
                                                             FROM
-                                                                slotting.massalgorithm_shipacc_recs
+                                                                custaudit.massalgorithm_shipacc_recs
                                                                     LEFT JOIN
-                                                                slotting.massalgorithm_actions ON shipacc_whse = ma_whse
+                                                                custaudit.massalgorithm_actions ON shipacc_whse = ma_whse
                                                                     AND shipacc_item = ma_item
                                                             WHERE
                                                                 NOT EXISTS( SELECT 
                                                                         *
                                                                     FROM
-                                                                        slotting.massalgorithm_actions
+                                                                        custaudit.massalgorithm_actions
                                                                     WHERE
                                                                         shipacc_whse = ma_whse
                                                                             AND shipacc_item = ma_item

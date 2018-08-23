@@ -11,7 +11,7 @@ if ($var_includeaudit == 0) {
     $var_include = "(SELECT DISTINCT
                         auditcomplete_custid
                     FROM
-                        slotting.auditcomplete
+                        custaudit.auditcomplete
                     WHERE
                         auditcomplete_date >= DATE_SUB(NOW(), INTERVAL 90 DAY))";
 } else {
@@ -78,9 +78,9 @@ $customerdata = $conn1->prepare("SELECT
                                     OSCQUARTER,
                                     SLOPEOSCQUARTER
                                 FROM
-                                    slotting.customerscores_salesplan A
+                                    custaudit.customerscores_salesplan A
                                         join
-                                    slotting.scorecard_display_salesplan B ON B.SALESPLAN = A.SALESPLAN
+                                    custaudit.scorecard_display_salesplan B ON B.SALESPLAN = A.SALESPLAN
                                 WHERE
                                     A.SALESPLAN not in $var_include and A.SALESPLAN not in ('SMSTR','CDH01', 'THS13', ' ') $var_salesplans
                                 ORDER BY SLOPE30DAY ASC;");

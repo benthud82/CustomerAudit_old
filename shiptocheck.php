@@ -7,7 +7,9 @@
 
         <title>Ship-To Check</title>
         <?php include_once 'headerincludes.php'; ?>
+        <?php include_once 'globaldata/modal_loading.php'; ?>
         <link href="../jquery-ui-1.10.3.custom.css" rel="stylesheet" type="text/css"/>
+        <link rel="stylesheet" type="text/css" href="osscss/print.css" media="print">
 
         <style>
             .table>tbody>tr>td {white-space: nowrap}
@@ -36,6 +38,10 @@
                     <div class="col-lg-2">
                         <div class="pull-left" style="margin-left: 15px" >
                             <button id="loaddata" type="button" class="btn btn-primary" onclick="gettable();" style="margin-bottom: 5px;">Load Data</button>
+                            <div class="btn-group">
+                                <button id="printdata" type="button" class="btn btn-inverse hidden" onclick="printdata();" style="margin-bottom: 5px; margin-left: 10px;">Print Data</button>
+                                <!--<button id="printdata" type="button" class="btn btn-inverse" onclick="printdata();" style="margin-bottom: 5px;">?</button>-->
+                            </div>
                         </div>
                     </div>
                     <div class="col-lg-1">
@@ -263,7 +269,7 @@
 
                             <div id="chartpage"  class="page-break" style="width: 100%">
                                 <div id="charts padded">
-                                    <div id="container" class="largecustchartstyle printrotate"></div>
+                                    <div id="frcontainer" class="largecustchartstyle printrotate"></div>
                                 </div>
                             </div>
                         </div>
@@ -471,8 +477,8 @@
 //                    gettable(selected);
 //            }
             });
-            
-            
+
+
             $(document).on("click", "#upload_submit", function (event) {
                 event.preventDefault();
                 var file = $('#fileToUpload').get(0).files[0];
@@ -500,8 +506,8 @@
                 });
             });
 
-
             function gettable() {
+                
 //                if (typeof (startdate) !== "undefined" && startdate !== null) {
 //                    var selectedstartdate = startdate;
 //                } else {
@@ -546,7 +552,7 @@
                 $("#clickedlinkdata").hide(); //hide any of the clicked detail links
                 $('#chartpage').removeClass('hidden'); //show the chart as it is populating through ajax
                 $('#datechanger').removeClass('hidden');
-                
+
                 $('#documentupload').removeClass('hidden');
                 //ajax for #salesplansummary
                 $.ajax({
@@ -681,177 +687,35 @@
                     ]
                 });
 
-                //options for fillrate highchart
-                var options = {
-                    chart: {
-                        marginTop: 50,
-                        marginBottom: 115,
-                        renderTo: 'container',
-                        type: 'spline'
-                    }, credits: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                verticalAlign: 'top',
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function () {
-                                    return Highcharts.numberFormat(this.y, 2) + ' %';
-                                }
-                            },
-                            point: {
-                                events: {
-                                    click: function () {
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    title: {
-                        text: ' '
-                    },
-                    xAxis: {
-                        categories: [], labels: {
-                            rotation: -90,
-                            y: 25,
-                            align: 'right',
-                            step: 1,
-                            style: {
-                                fontSize: '12px',
-                                fontFamily: 'Verdana, sans-serif'
-                            }
-                        },
-                        legend: {
-                            y: "10",
-                            x: "5"
-                        }
-
-                    },
-                    yAxis: {
-                        max: 100,
-                        title: {
-                            text: 'Fill Rate Percentage'
-                        },
-                        plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }],
-                        opposite: true
-                    }, tooltip: {
-                        formatter: function () {
-                            return '<b>' + this.series.name + '</b><br/>' +
-                                    this.x + ': ' + Highcharts.numberFormat(this.y, 2) + ' %';
-                        }
-                    },
-                    series: []
-                };
-  
-                $.ajax({
-                    url: 'globaldata/graphdata_' + numtype + '.php',
-                    data: {"shipto": shipto},
-                    type: 'GET',
-                    dataType: 'json',
-                    async: 'true',
-                    success: function (json) {
-                        options.xAxis.categories = json[0]['data'];
-                        options.series[0] = json[1];
-                        options.series[1] = json[2];
-                        chart = new Highcharts.Chart(options);
-                        series = chart.series;
-                    }
-                });
-
-
-                //options for custreturns highchart
-                var options2 = {
-                    chart: {
-                        marginTop: 50,
-                        marginBottom: 115,
-                        renderTo: 'container_custret',
-                        type: 'spline'
-                    }, credits: {
-                        enabled: false
-                    },
-                    plotOptions: {
-                        series: {
-                            cursor: 'pointer',
-                            dataLabels: {
-                                enabled: true,
-                                verticalAlign: 'top',
-                                color: '#000000',
-                                connectorColor: '#000000',
-                                formatter: function () {
-                                    return Highcharts.numberFormat(this.y, 2) + ' %';
-                                }
-                            },
-                            point: {
-                                events: {
-                                    click: function () {
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    title: {
-                        text: ' '
-                    },
-                    xAxis: {
-                        categories: [], labels: {
-                            rotation: -90,
-                            y: 25,
-                            align: 'right',
-                            step: 1,
-                            style: {
-                                fontSize: '12px',
-                                fontFamily: 'Verdana, sans-serif'
-                            }
-                        },
-                        legend: {
-                            y: "10",
-                            x: "5"
-                        }
-
-                    },
-                    yAxis: {
-                        max: 100,
-                        title: {
-                            text: 'Customer Returns Percentage'
-                        },
-                        plotLines: [{
-                                value: 0,
-                                width: 1,
-                                color: '#808080'
-                            }],
-                        opposite: true
-                    }, tooltip: {
-                        formatter: function () {
-                            return '<b>' + this.series.name + '</b><br/>' +
-                                    this.x + ': ' + Highcharts.numberFormat(this.y, 2) + ' %';
-                        }
-                    },
-                    series: []
-                };
-                $.ajax({
-                    url: 'globaldata/graphdata_custreturns.php',
-                    data: {"salesplan": shipto, "custtype": 'shipto'},
-                    type: 'GET',
-                    dataType: 'json',
-                    async: 'true',
-                    success: function (json) {
-                        options2.xAxis.categories = json[0]['data'];
-                        options2.series[0] = json[1];
-                        options2.series[1] = json[2];
-                        options2.series[2] = json[3];
-                        chart = new Highcharts.Chart(options2);
-                        series = chart.series;
-                    }
-                });
+                loadfillratehighchart_shipto(numtype, shipto);
+                loadcustreturnsratehighchart_shipto(numtype, shipto);
                 loaduploadmodule();
+                 $('#printdata').removeClass('hidden');
+            }
+
+            function printdata() {
+                $('#modal_loading').modal('toggle');
+                var shipto = $('#shipto').val();
+                var numtype = 'shipto';
+                //ajax for print audit
+                $.ajax({
+                    url: 'auditprint.php',
+                    data: {shipto: shipto, numtype: numtype}, //pass salesplan, billto, shipto all through billto
+                    type: 'POST',
+                    dataType: 'html',
+                    success: function (data) {
+                        $('#modal_loading').modal('toggle');
+                        var newWin = window.open();
+                        newWin.document.write(data);
+                        newWin.document.close();
+                        setTimeout(function () {
+                            newWin.focus();
+                        }, 1000);
+                        setTimeout(function () {
+                            newWin.print();
+                        }, 3000);
+                    }
+                });
             }
 
 

@@ -40,7 +40,7 @@ $var_score_r12 = intval($_POST['score_r12']);
 //$columns = 'customeraction_salesplan_id,customeraction_salesplan_salesplan, customeraction_salesplan_item, customeraction_salesplan_tsm, customeraction_salesplan_oppim, customeraction_salesplan_oppdc, customeraction_salesplan_oppsc, customeraction_salesplan_oppother, customeraction_salesplan_oppim_assgntsm, customeraction_salesplan_oppim_comm, customeraction_salesplan_oppdc_assgntsm, customeraction_salesplan_oppdc_comm, customeraction_salesplan_oppsc_assgntsm, customeraction_salesplan_oppsc_comm, customeraction_salesplan_oppother_assgntsm, customeraction_salesplan_oppother_comm, customeraction_salesplan_datetime, customeraction_salesplan_frbef, customeraction_salesplan_fraft, customeraction_salesplan_shipacc, customeraction_salesplan_dmg, customeraction_salesplan_scdesc, customeraction_salesplan_osc, customeraction_salesplan_score_mnt, customeraction_salesplan_score_qtr, customeraction_salesplan_score_r12';
 //$values = "$customeraction_salesplan_id,'$var_custid', $var_item, '$var_tsm', $var_checkboxim, $var_checkboxdc, $var_checkboxsc, $var_checkboxother, '$var_assignedtsm_im','$var_comment_im','$var_assignedtsm_dc','$var_comment_dc','$var_assignedtsm_sc', '$var_comment_sc','$var_assignedtsm_other','$var_comment_other','$datetime','$var_frbefore','$var_frafter','$var_shipacc','$var_dmg','$var_scdesc','$var_osc',$var_score_month,$var_score_quarter, $var_score_r12";
 //
-//$result1 = $conn1->prepare("INSERT INTO slotting.customeraction_salesplan ($columns) values ($values)");
+//$result1 = $conn1->prepare("INSERT INTO custaudit.customeraction_salesplan ($columns) values ($values)");
 //$result1->execute();
 
 $columns_asgntasks = 'idcustomeraction_asgntasks, customeraction_asgntasks_ASGNTSM, customeraction_asgntasks_TOTSM, customeraction_asgntasks_DATE, customeraction_asgntasks_GROUP, customeraction_asgntasks_ITEM, customeraction_asgntasks_CUSTGROUP, customeraction_asgntask_GROUPID, customeraction_asgntasks_COMMENT, customeraction_asgntasks_STATUS';
@@ -63,7 +63,7 @@ if ($var_checkboxother == 1) {
 $values_asgntasks = implode(',', $data);
 
 if (!empty($values_asgntasks)) {
-    $sql = "INSERT INTO slotting.customeraction_asgntasks ($columns_asgntasks) VALUES $values_asgntasks";
+    $sql = "INSERT INTO custaudit.customeraction_asgntasks ($columns_asgntasks) VALUES $values_asgntasks";
     $query = $conn1->prepare($sql);
     $query->execute();
 }

@@ -52,7 +52,7 @@ if (isset($_GET['salesplan'])) {
     $sql_cfr_incl = "SELECT 
                                     group_SHIPTO
                                 FROM
-                                    slotting.scorecard_groupingdetail
+                                    custaudit.scorecard_groupingdetail
                                 WHERE
                                     group_MASTERID = $var_salesplan;";
     $query_cfr_incl = $conn1->prepare($sql_cfr_incl);
@@ -119,9 +119,9 @@ $fillratedataarray = $fillratedata->fetchAll(pdo::FETCH_ASSOC);
 $recentaudit = $conn1->prepare("SELECT 
                                     *
                                 FROM
-                                    slotting.customeraction_asgntasks
+                                    custaudit.customeraction_asgntasks
                                         LEFT JOIN
-                                    slotting.customeraction_comptasks ON customeraction_comptasks_ASGNTSM = customeraction_asgntasks_ASGNTSM
+                                    custaudit.customeraction_comptasks ON customeraction_comptasks_ASGNTSM = customeraction_asgntasks_ASGNTSM
                                         and customeraction_asgntasks_DATE = customeraction_comptasks_ASGNDATE
                                 WHERE
                                     customeraction_asgntasks_DATE >= DATE_SUB(NOW(), INTERVAL 30 DAY) ;");
