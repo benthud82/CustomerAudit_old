@@ -90,6 +90,9 @@ foreach ($result1 as $row) {
     $PBFRMNT = number_format((float) $row['PBFRMNT'] * 100, 2) . '%';
     $PBFRQTR = number_format((float) $row['PBFRQTR'] * 100, 2) . '%';
     $PBFRR12 = number_format((float) $row['PBFRR12'] * 100, 2) . '%';
+    $ONTIMEMNT = number_format((float) $row['ONTIMEMNT'] * 100, 2) . '%';
+    $ONTIMEQTR = number_format((float) $row['ONTIMEQTR'] * 100, 2) . '%';
+    $ONTIMER12 = number_format((float) $row['ONTIMER12'] * 100, 2) . '%';
 }
 
 
@@ -191,8 +194,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimemnt"><?php echo $ONTIMEMNT ?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 
@@ -262,8 +265,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimeqtr"><?php echo $ONTIMEQTR ?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 
@@ -333,8 +336,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimer12"><?php echo $ONTIMER12?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 

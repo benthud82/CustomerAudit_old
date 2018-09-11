@@ -89,6 +89,9 @@ foreach ($result1 as $row) {
     $PBFRMNT = number_format((float) $row['PBFRMNT'] * 100, 2) . '%';
     $PBFRQTR = number_format((float) $row['PBFRQTR'] * 100, 2) . '%';
     $PBFRR12 = number_format((float) $row['PBFRR12'] * 100, 2) . '%';
+    $ONTIMEMNT = number_format((float) $row['ONTIMEMNT'] * 100, 2) . '%';
+    $ONTIMEQTR = number_format((float) $row['ONTIMEQTR'] * 100, 2) . '%';
+    $ONTIMER12 = number_format((float) $row['ONTIMER12'] * 100, 2) . '%';
 }
 
 
@@ -100,42 +103,42 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
 ?>
 <!--Top level summary data-->
 <div class="row" style="padding-bottom: 20px; padding-top: 20px"> 
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3 "> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body "> 
-                <i class="fa fa-line-chart fa fa-2x text"></i><div class="h4">Rolling 12 Month Lines</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo number_format($TOTR12LINES); ?> </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body"> 
-                <i class="fa fa-dollar fa fa-2x text"></i><div class="h4">Rolling 12 Sales</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo '$' . number_format($TOTR12SALES); ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center bg-info"> 
-            <div class="panel-body"> 
-                <i class="fa fa-area-chart fa fa-2x text"></i><div class="h4">Rolling 12 Before Fill Rate</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo $BEFFRR12_EXCLDS ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
-<!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
-        <section class="panel text-center <?php // echo ($statclassr12); ?>"> 
-            <div class="panel-body"> 
-                <i class="fa fa-user fa fa-2x text"></i><div class="h4">Rolling 12 Score</div>
-                <div class="line m-l m-r"></div> 
-                <h4 class="text"><strong><?php // echo $CUSTSCORER12_EXCLDS ?>  </strong></h4> 
-            </div> 
-        </section> 
-    </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3 "> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body "> 
+                    <i class="fa fa-line-chart fa fa-2x text"></i><div class="h4">Rolling 12 Month Lines</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo number_format($TOTR12LINES);  ?> </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-dollar fa fa-2x text"></i><div class="h4">Rolling 12 Sales</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo '$' . number_format($TOTR12SALES);  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center bg-info"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-area-chart fa fa-2x text"></i><div class="h4">Rolling 12 Before Fill Rate</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo $BEFFRR12_EXCLDS  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
+    <!--    <div class="col-xs-12 col-sm-6 col-lg-3"> 
+            <section class="panel text-center <?php // echo ($statclassr12);  ?>"> 
+                <div class="panel-body"> 
+                    <i class="fa fa-user fa fa-2x text"></i><div class="h4">Rolling 12 Score</div>
+                    <div class="line m-l m-r"></div> 
+                    <h4 class="text"><strong><?php // echo $CUSTSCORER12_EXCLDS  ?>  </strong></h4> 
+                </div> 
+            </section> 
+        </div> -->
 </div>
 
 <div class="row" style="padding-bottom: 10px; padding-top: 10px;">
@@ -190,8 +193,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimemnt"><?php echo $ONTIMEMNT ?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 
@@ -261,8 +264,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimeqtr"><?php echo $ONTIMEQTR ?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 
@@ -332,8 +335,8 @@ $statclassr12 = _newcustomerscorecardstatclass($CUSTSCORER12_EXCLDS);
                 </div>
 
                 <div class="list-group-item"> 
-                    <span class="pull-right"><strong>--</strong></span> 
-                    Time in Transit
+                    <span class="pull-right"><strong id="ontimer12"><?php echo $ONTIMER12?></strong></span> 
+                    On Time Delivery
                 </div>
 
                 <div class="list-group-item"> 
